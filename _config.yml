@@ -1,9 +1,4 @@
+title: Prime's World
 theme: jekyll-theme-architect
-
-footer {
-  display: none !important;
-}
-
-.btn {
-  display: none !important;
-}
+github:
+  is_project_page: false
