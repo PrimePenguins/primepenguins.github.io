@@ -1,5 +1,1 @@
-Testing...
-
-```
-Prime Test!
-```
+## Prime's Page
