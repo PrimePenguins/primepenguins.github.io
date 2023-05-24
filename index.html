@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* CSS styling */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #bathroom-container {
+            width: 70%; /* Adjust the width as desired */
+            margin: auto;
+            height: 80vh; /* Adjust the height as desired */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #sidebar {
+            width: 200px;
+            background-color: #f2f2f2;
+            overflow-y: scroll;
+            padding: 10px;
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #owned-bathrooms {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #owned-bathrooms > div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        #owned-bathrooms img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        #bathroom-image {
+            max-height: calc(100vh - 100px); /* Subtract the sidebar height and buy cost text height */
+            margin: 10px;
+        }
+        #buy-cost {
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        #button-container {
+            text-align: center;
+            margin-top: 10px;
+        }
+        #buy-button {
+            background-color: green;
+            color: white;
+            margin-right: 10px;
+        }
+        #skip-button {
+            background-color: red;
+            color: white;
+            margin-left: 10px;
+        }
+        #sell-button {
+            background-color: gold;
+            color: white;
+            margin-left: 10px;
+        }
+        #message {
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        #currency {
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="bathroom-container">
+        <div id="buy-cost">Buy Cost: 0</div>
+        <img id="bathroom-image" src="" alt="Bathroom Image">
+    </div>
+    <div id="sidebar">
+        <h1>Bathrooms</h1>
+        <div id="owned-bathrooms"></div>
+        <div id="coins-per-second">Coins Per Second: 0</div>
+        <div id="currency">Coins: 0</div>
+        <button id="reset-button" onclick="resetGame()">Reset</button>
+        <button id="save-button" onclick="saveGame()">Save</button>
+        <button id="load-button" onclick="loadGame()">Load</button>
+    </div>
+    <div id="button-container">
+        <button id="buy-button" onclick="buyBathroom()">Buy</button>
+        <button id="skip-button" onclick="skipBathroom()">Skip</button>
+        <button id="sell-button" onclick="sellBathroom()">Sell</button>
+    </div>
+    <div id="message"></div>
+
+    <script>
+    // JavaScript functionality
+var bathrooms = [
+  { id: 1, name: "Moderin Bathtime", image: "1.jpg", cost: 80, reward: 10 },
+  { id: 2, name: "Blue Bathroom", image: "2.jpg", cost: 75, reward: 15 },
+  { id: 3, name: "White but with spice bathroom", image: "3.jpg", cost: 100, reward: 20 },
+  { id: 4, name: "Richie Rich Bathroom", image: "4.jpg", cost: 10000, reward: 500 },
+  { id: 5, name: "Very Fancy Bathroom", image: "5.jpg", cost: 30000, reward: 200 },
+  { id: 6, name: "You Know Who's Bathroom", image: "6.jpg", cost: 15, reward: 5 },
+  { id: 7, name: "Earth's Top 5 Worse Bathrooms", image: "7.jpg", cost: 10, reward: 2 },
+  { id: 8, name: "Honestly, the reality of every single reality tv show ever", image: "8.jpg", cost: 10, reward: 2 },
+  { id: 9, name: "Life RN", image: "9.jpg", cost: 10, reward: 2 }
+];
+
+var bathroomImage = document.getElementById("bathroom-image");
+var messageDiv = document.getElementById("message");
+var currencyDiv = document.getElementById("currency");
+var ownedBathroomsDiv = document.getElementById("owned-bathrooms");
+var buyCostDiv = document.getElementById("buy-cost");
+
+var coinsPerSecond = 0;
+var coins = 200;
+var currentBathroomIndex = 0;
+var ownedBathrooms = [];
+
+function updateBathroomImage() {
+  bathroomImage.src = bathrooms[currentBathroomIndex].image;
+}
+
+function updateOwnedBathrooms() {
+  ownedBathroomsDiv.innerHTML = "";
+
+  ownedBathrooms.forEach(function (bathroom) {
+    var bathroomDiv = document.createElement("div");
+    bathroomDiv.className = "owned-bathroom";
+
+    // Display bathroom details
+    bathroomDiv.innerHTML =
+      '<img src="' +
+      bathroom.image +
+      '" alt="Owned Bathroom Image">' +
+      '<div>' +
+      bathroom.name +
+      '</div><div class="bathroom-reward">Reward: ' +
+      bathroom.reward +
+      ' coins per second</div>';
+
+    ownedBathroomsDiv.appendChild(bathroomDiv);
+  });
+
+  // Update coins per second on the sidebar
+  var coinsPerSecondDiv = document.getElementById("coins-per-second");
+  if (coinsPerSecondDiv) {
+    coinsPerSecondDiv.innerText = "Coins Per Second: " + coinsPerSecond.toFixed(2);
+  }
+}
+
+function buyBathroom() {
+  var currentBathroom = bathrooms[currentBathroomIndex];
+  if (coins >= currentBathroom.cost) {
+    coins -= currentBathroom.cost;
+    coinsPerSecond += currentBathroom.reward;
+
+    var ownedBathroom = {
+      id: currentBathroom.id,
+      name: currentBathroom.name,
+      image: currentBathroom.image,
+      reward: currentBathroom.reward
+    };
+
+    ownedBathrooms.push(ownedBathroom);
+    updateOwnedBathrooms();
+    messageDiv.innerText = "You bought " + currentBathroom.name + "!";
+    currencyDiv.innerText = "Coins: " + coins.toFixed(2);
+    buyCostDiv.innerText = "Buy Cost: " + bathrooms[currentBathroomIndex].cost.toFixed(2);
+
+    // Randomize the current bathroom index
+    currentBathroomIndex = Math.floor(Math.random() * bathrooms.length);
+    updateBathroomImage();
+  } else {
+    messageDiv.innerText = "Not enough coins to buy this bathroom!";
+  }
+  buyCostDiv.innerText = "Buy Cost: " + bathrooms[currentBathroomIndex].cost.toFixed(2);
+}
+
+function skipBathroom() {
+  // Randomize the current bathroom index
+  currentBathroomIndex = Math.floor(Math.random() * bathrooms.length);
+  updateBathroomImage();
+}
+
+
+function sellBathroom() {
+  if (ownedBathrooms.length > 0) {
+    var bathroomToSell = ownedBathrooms.pop();
+    coins += bathroomToSell.reward;
+    coinsPerSecond -= bathroomToSell.reward;
+
+    updateOwnedBathrooms();
+    messageDiv.innerText = "You sold " + bathroomToSell.name + "!";
+    currencyDiv.innerText = "Coins: " + coins.toFixed(2);
+    buyCostDiv.innerText = "Buy Cost: " + bathrooms[currentBathroomIndex].cost.toFixed(2);
+  } else {
+    messageDiv.innerText = "You don't own any bathrooms to sell!";
+  }
+  buyCostDiv.innerText = "Buy Cost: " + bathrooms[currentBathroomIndex].cost.toFixed(2);
+}
+
+function saveGame() {
+  var gameData = {
+    coins: coins,
+    coinsPerSecond: coinsPerSecond,
+    currentBathroomIndex: currentBathroomIndex,
+    ownedBathrooms: ownedBathrooms
+  };
+
+  var gameDataString = JSON.stringify(gameData);
+  localStorage.setItem("bathroomGame", gameDataString);
+  messageDiv.innerText = "Game saved!";
+}
+
+function loadGame() {
+  var gameDataString = localStorage.getItem("bathroomGame");
+  if (gameDataString) {
+    var gameData = JSON.parse(gameDataString);
+
+    coins = gameData.coins;
+    coinsPerSecond = gameData.coinsPerSecond;
+    currentBathroomIndex = gameData.currentBathroomIndex;
+    ownedBathrooms = gameData.ownedBathrooms;
+
+    updateBathroomImage();
+    updateOwnedBathrooms();
+    currencyDiv.innerText = "Coins: " + coins.toFixed(2);
+    messageDiv.innerText = "Game loaded!";
+  } else {
+    messageDiv.innerText = "No saved game found!";
+  }
+}
+
+function resetGame() {
+  coins = 200;
+  coinsPerSecond = 0;
+  currentBathroomIndex = 0;
+  ownedBathrooms = [];
+
+  updateBathroomImage();
+  updateOwnedBathrooms();
+  currencyDiv.innerText = "Coins: " + coins.toFixed(2);
+  messageDiv.innerText = "Game reset!";
+  buyCostDiv.innerText = "Buy Cost: " + bathrooms[currentBathroomIndex].cost.toFixed(2);
+}
+
+// Function to update coins based on coinsPerSecond
+function updateCoins() {
+  coins += coinsPerSecond;
+  currencyDiv.innerText = "Coins: " + coins.toFixed(2);
+}
+
+// Load the game on page load
+window.addEventListener("load", function () {
+  loadGame();
+
+  // Set up the interval to update coins
+  setInterval(updateCoins, 1000);
+});
+
+    </script>
+</body>
+</html>
