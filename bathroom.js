@@ -93,6 +93,7 @@ function skipBathroom() {
   // Randomize the current bathroom index
   currentBathroomIndex = Math.floor(Math.random() * bathrooms.length);
   updateBathroomImage();
+  updateBuyCost();
 }
 
 function sellBathroom() {
