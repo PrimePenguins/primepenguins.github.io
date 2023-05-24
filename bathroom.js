@@ -9,7 +9,7 @@ var bathrooms = [
   { id: 7, name: "Earth's Top 5 Worse Bathrooms", image: "7.jpg", cost: 10, reward: 2 },
   { id: 8, name: "Honestly, the reality of every single reality tv show ever", image: "8.jpg", cost: 10, reward: 2 },
   { id: 9, name: "Richie Rich", image: "10.jpg", cost: 500000000, reward: 500000 },
-  { id: 9, name: "Jeff Bazo's Bathroom", image: "11.jpg", cost: 100000000000000000000000000000000, reward: 5000000000000000000000 }
+  { id: 10, name: "Jeff Bazo's Bathroom", image: "11.jpg", cost: 100000000000000, reward: 5000000 }
 ];
 
 var bathroomImage = document.getElementById("bathroom-image");
@@ -57,7 +57,8 @@ function updateOwnedBathrooms() {
 
 function updateBuyCost() {
   if (buyCostDiv) {
-    buyCostDiv.innerText = "Buy Cost: " + bathrooms[currentBathroomIndex].cost.toFixed(2);
+    var index = currentBathroomIndex % bathrooms.length; // Correctly calculate the index
+    buyCostDiv.innerText = "Buy Cost: " + bathrooms[index].cost.toFixed(2);
   }
 }
 
