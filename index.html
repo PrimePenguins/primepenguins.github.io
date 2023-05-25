@@ -3,88 +3,107 @@
 <head>
     <style>
         /* CSS styling */
-body {
-    margin: 0;
-    padding: 0;
-}
-#bathroom-container {
-    width: 70%; /* Adjust the width as desired */
-    margin: auto;
-    height: 80vh; /* Adjust the height as desired */
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-#sidebar {
-    width: 200px;
-    background-color: #f2f2f2;
-    overflow-y: scroll;
-    padding: 10px;
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-#owned-bathrooms {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-#owned-bathrooms > div {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-#owned-bathrooms img {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
-}
-#bathroom-image {
-    max-height: calc(100vh - 100px); /* Subtract the sidebar height and buy cost text height */
-    margin: 10px;
-}
-#buy-cost {
-    text-align: center;
-    font-weight: bold;
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-#button-container {
-    text-align: center;
-    margin-top: 10px;
-}
-#buy-button,
-#skip-button,
-#sell-button {
-    background-color: green;
-    color: white;
-    margin: 0 5px; /* Adjust the margin as desired */
-    padding: 10px 20px; /* Adjust the padding as desired */
-}
-#buy-button:hover,
-#skip-button:hover,
-#sell-button:hover {
-    background-color: darkgreen; /* Adjust the hover background color as desired */
-}
-#message {
-    text-align: center;
-    font-weight: bold;
-    font-size: 18px;
-    margin-top: 10px;
-}
-#currency {
-    text-align: center;
-    font-weight: bold;
-    font-size: 18px;
-    margin-top: 10px;
-}
-
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #bathroom-container {
+            width: 70%; /* Adjust the width as desired */
+            margin: auto;
+            height: 80vh; /* Adjust the height as desired */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #sidebar {
+            width: 200px;
+            background-color: #f2f2f2;
+            overflow-y: scroll;
+            padding: 10px;
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #owned-bathrooms {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #owned-bathrooms > div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        #owned-bathrooms img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        #bathroom-image {
+            max-height: calc(100vh - 100px); /* Subtract the sidebar height and buy cost text height */
+            margin: 10px;
+        }
+        #buy-cost {
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        #button-container {
+            text-align: center;
+            margin-top: 10px;
+        }
+        #buy-button,
+        #skip-button,
+        #sell-button {
+            background-color: green;
+            color: white;
+            margin: 0 5px; /* Adjust the margin as desired */
+            padding: 10px 20px; /* Adjust the padding as desired */
+        }
+        #buy-button:hover,
+        #skip-button:hover,
+        #sell-button:hover {
+            background-color: darkgreen; /* Adjust the hover background color as desired */
+        }
+        #message {
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        #currency {
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        #upgrades-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #achievements-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .upgrade-item,
+        .achievement-item {
+            background-color: #f2f2f2;
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 80%;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -97,6 +116,14 @@ body {
         <div id="owned-bathrooms"></div>
         <div id="coins-per-second">Coins Per Second: 0</div>
         <div id="currency">Coins: 0</div>
+        <div id="achievements-container">
+            <h2>Achievements</h2>
+            <div id="owned-achievements"></div>
+        </div>
+        <div id="upgrades-container">
+            <h2>Upgrades</h2>
+            <div id="upgrades"></div>
+        </div>
         <button id="reset-button" onclick="resetGame()">Reset</button>
         <button id="save-button" onclick="saveGame()">Save</button>
         <button id="load-button" onclick="loadGame()">Load</button>
@@ -109,6 +136,10 @@ body {
     <div id="message"></div>
 
     <script src="bathroom.js"></script>
+    <script src="achievements.js"></script>
+    <script src="upgrades.js"></script>
 </body>
 </html>
+
+
 
