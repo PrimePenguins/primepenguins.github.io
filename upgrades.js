@@ -67,6 +67,3 @@ if (storedOwnedUpgrades) {
 // Call the updateUpgrades function after updating the sidebar
 updateUpgrades();
 updateUpgradePercentage(); // Update the upgrade percentage initially
-
-
-  

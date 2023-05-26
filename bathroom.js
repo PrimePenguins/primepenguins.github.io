@@ -87,7 +87,6 @@ function buyBathroom() {
   } else {
     messageDiv.innerText = "Not enough coins to buy this bathroom!";
   }
-  updateBuyCost();
 }
 
 function skipBathroom() {
@@ -110,7 +109,6 @@ function sellBathroom() {
   } else {
     messageDiv.innerText = "You don't own any bathrooms to sell!";
   }
-  updateBuyCost();
 }
 
 function saveGame() {
@@ -119,12 +117,16 @@ function saveGame() {
     coinsPerSecond: coinsPerSecond,
     currentBathroomIndex: currentBathroomIndex,
     ownedBathrooms: ownedBathrooms,
-    ownedUpgrades: ownedUpgrades,
-    darkMode: document.body.classList.contains('dark-mode')
+    ownedUpgrades: ownedUpgrades
   };
 
   var gameDataString = JSON.stringify(gameData);
   localStorage.setItem("bathroomGame", gameDataString);
+
+  // Save the ownedUpgrades array separately
+  var ownedUpgradesString = JSON.stringify(ownedUpgrades);
+  localStorage.setItem("ownedUpgrades", ownedUpgradesString);
+
   messageDiv.innerText = "Game saved!";
 }
 
@@ -137,21 +139,25 @@ function loadGame() {
     coinsPerSecond = gameData.coinsPerSecond;
     currentBathroomIndex = gameData.currentBathroomIndex;
     ownedBathrooms = gameData.ownedBathrooms;
-    ownedUpgrades = gameData.ownedUpgrades;
+
+    // Load the ownedUpgrades array from local storage
+    var storedOwnedUpgrades = localStorage.getItem("ownedUpgrades");
+    if (storedOwnedUpgrades) {
+      ownedUpgrades = JSON.parse(storedOwnedUpgrades);
+    } else {
+      ownedUpgrades = [];
+    }
 
     updateBathroomImage();
     updateOwnedBathrooms();
     currencyDiv.innerText = "Coins: " + coins.toFixed(2);
     messageDiv.innerText = "Game loaded!";
     updateBuyCost();
-
-    if (gameData.darkMode) {
-      document.body.classList.add('dark-mode');
-    }
   } else {
     messageDiv.innerText = "No saved game found!";
   }
 }
+
 
 function resetGame() {
   coins = 200;
@@ -183,4 +189,3 @@ window.addEventListener("load", function () {
   // Set up the interval to update coins
   setInterval(updateCoins, 1000);
 });
-
