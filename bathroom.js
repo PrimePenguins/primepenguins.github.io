@@ -158,7 +158,6 @@ function loadGame() {
   }
 }
 
-
 function resetGame() {
   coins = 200;
   coinsPerSecond = 0;
