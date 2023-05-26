@@ -1,4 +1,3 @@
-// JavaScript functionality
 var bathrooms = [
   { id: 1, name: "Moderin Bathtime", image: "1.jpg", cost: 80, reward: 10 },
   { id: 2, name: "Blue Bathroom", image: "2.jpg", cost: 75, reward: 15 },
@@ -22,6 +21,7 @@ var coinsPerSecond = 0;
 var coins = 200;
 var currentBathroomIndex = 0;
 var ownedBathrooms = [];
+var ownedUpgrades = [];
 
 function updateBathroomImage() {
   bathroomImage.src = bathrooms[currentBathroomIndex].image;
@@ -118,7 +118,9 @@ function saveGame() {
     coins: coins,
     coinsPerSecond: coinsPerSecond,
     currentBathroomIndex: currentBathroomIndex,
-    ownedBathrooms: ownedBathrooms
+    ownedBathrooms: ownedBathrooms,
+    ownedUpgrades: ownedUpgrades,
+    darkMode: document.body.classList.contains('dark-mode')
   };
 
   var gameDataString = JSON.stringify(gameData);
@@ -135,12 +137,17 @@ function loadGame() {
     coinsPerSecond = gameData.coinsPerSecond;
     currentBathroomIndex = gameData.currentBathroomIndex;
     ownedBathrooms = gameData.ownedBathrooms;
+    ownedUpgrades = gameData.ownedUpgrades;
 
     updateBathroomImage();
     updateOwnedBathrooms();
     currencyDiv.innerText = "Coins: " + coins.toFixed(2);
     messageDiv.innerText = "Game loaded!";
     updateBuyCost();
+
+    if (gameData.darkMode) {
+      document.body.classList.add('dark-mode');
+    }
   } else {
     messageDiv.innerText = "No saved game found!";
   }
@@ -151,6 +158,7 @@ function resetGame() {
   coinsPerSecond = 0;
   currentBathroomIndex = 0;
   ownedBathrooms = [];
+  ownedUpgrades = [];
 
   updateBathroomImage();
   updateOwnedBathrooms();
@@ -175,3 +183,4 @@ window.addEventListener("load", function () {
   // Set up the interval to update coins
   setInterval(updateCoins, 1000);
 });
+
