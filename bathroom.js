@@ -11,6 +11,12 @@ var bathrooms = [
   { id: 10, name: "Jeff Bazo's Bathroom", image: "11.jpg", cost: 100000000000000, reward: 5000000 }
 ];
 
+var specialBathrooms = [
+  { id: 11, name: "Fool's Bathroom", image: "fools-bathroom.jpeg", cost: 3000, reward: -200 },
+  { id: 12, name: "Santa's Bathroom", image: "santas-bathroom.jpeg", cost: 10000, reward: 20000 },
+  { id: 13, name: "Prime's Bathroom", image: "birthday-bathroom.jpeg", cost: 10, reward: 500 }
+];
+
 var bathroomImage = document.getElementById("bathroom-image");
 var messageDiv = document.getElementById("message");
 var currencyDiv = document.getElementById("currency");
@@ -22,6 +28,33 @@ var coins = 200;
 var currentBathroomIndex = 0;
 var ownedBathrooms = [];
 var ownedUpgrades = [];
+
+function getSpecialBathroom(day, month) {
+  if (day === 1 && month === 4) {
+    // April Fools Day
+    return specialBathrooms[0];
+  } else if (day === 25 && month === 12) {
+    // Christmas
+    return specialBathrooms[1];
+  } else if (day === 6 && month === 9) {
+    // Prime's Birthday
+    return specialBathrooms[2];
+  }
+
+  return null; // No special bathroom for the given day
+}
+
+function formatNumber(number) {
+  var suffixes = ["", "k", "M", "B", "T"];
+  var suffixIndex = 0;
+
+  while (number >= 1000 && suffixIndex < suffixes.length - 1) {
+    number /= 1000;
+    suffixIndex++;
+  }
+
+  return number.toFixed(2) + suffixes[suffixIndex];
+}
 
 function updateBathroomImage() {
   bathroomImage.src = bathrooms[currentBathroomIndex].image;
@@ -78,7 +111,7 @@ function buyBathroom() {
     ownedBathrooms.push(ownedBathroom);
     updateOwnedBathrooms();
     messageDiv.innerText = "You bought " + currentBathroom.name + "!";
-    currencyDiv.innerText = "Coins: " + coins.toFixed(2);
+    currencyDiv.innerText = "Coins: " + formatNumber(coins);
     updateBuyCost();
 
     // Randomize the current bathroom index
@@ -104,7 +137,7 @@ function sellBathroom() {
 
     updateOwnedBathrooms();
     messageDiv.innerText = "You sold " + bathroomToSell.name + "!";
-    currencyDiv.innerText = "Coins: " + coins.toFixed(2);
+    currencyDiv.innerText = "Coins: " + formatNumber(coins);
     updateBuyCost();
   } else {
     messageDiv.innerText = "You don't own any bathrooms to sell!";
@@ -150,7 +183,7 @@ function loadGame() {
 
     updateBathroomImage();
     updateOwnedBathrooms();
-    currencyDiv.innerText = "Coins: " + coins.toFixed(2);
+    currencyDiv.innerText = "Coins: " + formatNumber(coins);
     messageDiv.innerText = "Game loaded!";
     updateBuyCost();
   } else {
@@ -167,7 +200,7 @@ function resetGame() {
 
   updateBathroomImage();
   updateOwnedBathrooms();
-  currencyDiv.innerText = "Coins: " + coins.toFixed(2);
+  currencyDiv.innerText = "Coins: " + formatNumber(coins);
   messageDiv.innerText = "Game reset!";
   updateBuyCost();
 }
@@ -175,7 +208,7 @@ function resetGame() {
 // Function to update coins based on coinsPerSecond
 function updateCoins() {
   coins += coinsPerSecond;
-  currencyDiv.innerText = "Coins: " + coins.toFixed(2);
+  currencyDiv.innerText = "Coins: " + formatNumber(coins);
 }
 
 // Auto-save the game every 5 minutes
