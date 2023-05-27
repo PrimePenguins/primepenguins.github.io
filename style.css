@@ -1,4 +1,6 @@
 /* styles.css */
+
+/* Common styles */
 body {
     margin: 0;
     padding: 0;
@@ -100,20 +102,6 @@ body {
     margin-top: 10px;
 }
 
-#upgrades-container {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#achievements-container {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .upgrade-item,
 .achievement-item {
     background-color: #f2f2f2;
@@ -127,3 +115,42 @@ body {
     width: 100%; /* Adjust the button width as desired */
 }
 
+/* Mobile styles */
+@media only screen and (max-width: 600px) {
+    #bathroom-container {
+        width: 90%; /* Adjust the width as desired */
+    }
+  
+    #sidebar {
+        width: 100%;
+        position: static;
+        flex-direction: row;
+        justify-content: space-around;
+        overflow-y: hidden;
+        padding-bottom: 20px;
+    }
+  
+    #owned-bathrooms {
+        flex-direction: row;
+        align-items: center;
+        overflow-x: scroll;
+    }
+  
+    #owned-bathrooms > div {
+        margin-right: 10px;
+    }
+  
+    #bathroom-image {
+        max-height: calc(100vh - 150px); /* Subtract the buy cost text height and additional margin */
+    }
+  
+    #buy-cost {
+        margin-top: 10px;
+        margin-bottom: 0;
+    }
+  
+    #button-container {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}
