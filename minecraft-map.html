@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft Maps</title>
+  <link rel="stylesheet" href="styles/maps.css">
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <h1>Prime's Site</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="bathroom.html">Bathroom Game</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="content">
+    <div class="centered">
+      <h2>Minecraft Maps</h2>
+      <div class="map-grid">
+        <div class="map">
+          <h3>A Normal Unfair Map</h3>
+          <figure>
+            <img src="images/map-images/ANUFM.jpg" alt="A Normal Unfair Map! Go ahead and try it!">
+            <figcaption>A Normal Unfair Map! Go ahead and try it!</figcaption>
+          </figure>
+          <a href="download/A Normal Unfair Map 1.1v.zip" download>Download</a>
+        </div>
+        <div class="map">
+          <h3>A Simple Test</h3>
+          <figure>
+            <img src="images/map-images/ast.jpg" alt="A Simple Test! Answer a couple of questions.. is it that quite simple?">
+            <figcaption>A Simple Test! Answer a couple of questions.. is it that quite simple?</figcaption>
+          </figure>
+          <a href="download/a-simple-test-2v.zip" download>Download</a>
+        </div>
+        <div class="map">
+          <h3>Bow Battle</h3>
+          <figure>
+            <img src="images/map-images/bowbattle.jpg" alt="Shoot your friends in bow battle.">
+            <figcaption>Shoot your friends in bow battle.</figcaption>
+          </figure>
+          <a href="download/Bow Battle 1.0v.zip" download>Download</a>
+        </div>
+        <div class="map">
+          <h3>Code: Red</h3>
+          <figure>
+            <img src="images/map-images/code-red.jpg" alt="Virus has launched another attack on Time Labs. You play as Agent Red aka Lucuma!">
+            <figcaption>Virus has launched another attack on Time Labs. You play as Agent Red aka Lucuma!</figcaption>
+          </figure>
+          <a href="download/Code_ Red (Map Jam Version).zip" download>Download</a>
+        </div>
+        <div class="map">
+          <h3>Mimic Colors</h3>
+          <figure>
+            <img src="images/map-images/mimic-color.jpg" alt="Mimic the patterns and memorize them!">
+            <figcaption>Mimic the patterns and memorize them!</figcaption>
+          </figure>
+          <a href="download/mimic-colors.zip" download>Download</a>
+        </div>
+        <div class="map">
+          <h3>Unfair Journey</h3>
+          <figure>
+            <img src="images/map-images/UFJ.jpg" alt="One of my worst maps to this day..">
+            <figcaption>One of my worst maps to this day..</figcaption>
+          </figure>
+          <a href="download/Unfair Journey 1v.zip" download>Download</a>
+        </div>
+        <!-- Add more map elements as needed -->
+      </div>
+    </div>
+  </section>
+  <section class="content">
+    <div class="centered">
+
+      <div class="speedrun-container">
+        <h2>Speedrunning Minecraft Maps</h2>
+        <p>Choose a Minecraft map below to start speedrunning:</p>
+        <label for="category-select">Select Category:</label>
+        <select id="category-select">
+          <option value="Code Red">Code Red</option>
+          <option value="AST 100%">AST | 100%</option>
+          <option value="AST Any%">AST | Any%</option>
+          <option value="ANUM">A Normal Unfair Map</option>
+          <option value="MC">Mimic Colors</option>
+          <!-- Add more options for different categories as needed -->
+          
+        </select>
+        <ul class="speedrun-list"></ul>
+        <h2> In order to sumbit your speedruns, join the discord.</h2>
+      </div>
+
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="scripts/speedrun/speedrun.js"></script>
+
+  <footer>
+    <!-- Footer content -->
+  </footer>
+</body>
+
+</html>
