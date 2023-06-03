@@ -24,7 +24,7 @@
         <button id="reset-button" onclick="resetGame()">Reset</button>
         <button id="save-button" onclick="saveGame()">Save</button>
         <button id="load-button" onclick="loadGame()">Load</button>
-        <a href="index.html">Go to Home Page</a>
+        <a href="index.md">Go to Home Page</a>
     </div>
     <div id="button-container">
         <button id="buy-button" onclick="buyBathroom()">Buy</button>
