@@ -101,3 +101,29 @@ body {
     font-size: 14px;
     border-radius: 4px;
   }
+  .speedrun-container {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .speedrun-container h2 {
+    font-size: 20px;
+  }
+
+  .speedrun-container p {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+
+  .speedrun-container ul {
+    margin-top: 10px;
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+
+  .speedrun-container li {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
