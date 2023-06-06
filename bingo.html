@@ -47,6 +47,7 @@
     <div class="centered">
       <h2>Map Jam Bingo</h2>
       <div class="bingo-board" id="bingoBoard"></div>
+      <button class="reset-button" onclick="resetBoard()">Reset</button>
       <button class="save-button" onclick="saveAsImage()">Save as Image</button>
     </div>
   </section>
@@ -59,7 +60,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const squares = [
-      "Someone's map stops working (Player Done)",
+        "Someone's map stops working (Player Done)",
         "Prime gets last place",
         "Chopper gets top 10",
         "At least 5 people/teams did not finish their map in time",
@@ -90,30 +91,27 @@
 
       function generateBoard() {
         bingoBoard.innerHTML = '';
+        markedSquares = [];
+
+        // Shuffle the squares array
+        const shuffledSquares = squares.sort(() => Math.random() - 0.5);
 
         for (let i = 0; i < 25; i++) {
           const square = document.createElement('div');
           square.classList.add('bingo-square');
-          square.textContent = squares[i];
+          square.textContent = shuffledSquares[i];
           square.addEventListener('click', () => markSquare(square, i));
           bingoBoard.appendChild(square);
         }
       }
 
       function markSquare(square, index) {
-        if (!square.classList.contains('marked')) {
+        if (index === 24 && !square.classList.contains('marked')) {
           square.classList.add('marked');
           markedSquares.push(square.textContent);
-        } else {
-          square.classList.remove('marked');
-          const squareIndex = markedSquares.indexOf(square.textContent);
-          if (squareIndex > -1) {
-            markedSquares.splice(squareIndex, 1);
-          }
+          checkBingo();
+          saveBoard();
         }
-
-        checkBingo();
-        saveBoard();
       }
 
       function checkBingo() {
@@ -151,13 +149,20 @@
         const savedBoard = localStorage.getItem('bingoBoard');
         if (savedBoard) {
           markedSquares = JSON.parse(savedBoard);
-          const squares = bingoBoard.querySelectorAll('.bingo-square');
-          squares.forEach((square, index) => {
-            if (markedSquares.includes(square.textContent)) {
-              square.classList.add('marked');
-            }
-          });
+          for (let i = 0; i < markedSquares.length; i++) {
+            const square = bingoBoard.children[i];
+            square.classList.add('marked');
+          }
         }
+      }
+
+      function resetBoard() {
+        const squares = bingoBoard.getElementsByClassName('bingo-square');
+        for (let i = 0; i < squares.length; i++) {
+          squares[i].classList.remove('marked');
+        }
+        markedSquares = [];
+        localStorage.removeItem('bingoBoard');
       }
 
       function saveAsImage() {
