@@ -11,7 +11,7 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       grid-gap: 20px;
-      max-width: 800px;
+      max-width: 600px;
       margin: 0 auto;
     }
 
@@ -29,6 +29,11 @@
 
     .save-button {
       margin-top: 20px;
+      display: block;
+    }
+
+    .reset-button {
+      margin-top: 10px;
       display: block;
     }
   </style>
@@ -53,6 +58,7 @@
       <h2>5x5 Bingo Board</h2>
       <div class="bingo-board" id="bingoBoard"></div>
       <button class="save-button" onclick="saveAsImage()">Save as Image</button>
+      <button class="reset-button" onclick="resetBoard()">Reset</button>
     </div>
   </section>
 
@@ -77,25 +83,31 @@
         "Prime gets top 5-10",
         "One of Yegg's team members wins",
         "We actually didn't expect anything in a map",
-        "Guy who's been talking for 3 days fails to submit (Free Space)",
+        "Guy who's been talking for 3 days fails to submi (Free Space)",
         "You spawn in the wrong place",
         "Lucian lets a guy in an hour late",
         "A map is missing an RP",
         "Worf's Second Map gets top 10",
         "Corgi's map doesn't work",
-        "Unexpected theme combination",
-        "Corgi leaves voice chat mid-jam",
-        "Someone creates a unique game mechanic",
-        "Prime gets a new skin mid-jam",
-        "Yegg's team creates an impressive build",
-        "A map exceeds the time limit"
+        "New Square 1",
+        "New Square 2",
+        "New Square 3",
+        "New Square 4",
+        "New Square 5"
       ];
 
-      const bingoBoard = document.getElementById('bingoBoard');
       let markedSquares = [];
+      let randomizedSquares = [];
 
-      // Randomize the order of the squares
-      const randomizedSquares = squares.sort(() => Math.random() - 0.5);
+      // Load saved state from local storage or randomize the order of squares
+      const savedState = localStorage.getItem('bingoBoardState');
+      if (savedState) {
+        randomizedSquares = JSON.parse(savedState);
+      } else {
+        randomizedSquares = squares.sort(() => Math.random() - 0.5);
+      }
+
+      const bingoBoard = document.getElementById('bingoBoard');
 
       // Generate the bingo board
       for (let i = 0; i < 25; i++) {
@@ -106,6 +118,13 @@
         bingoBoard.appendChild(square);
       }
 
+      // Load marked squares from local storage
+      const savedMarkedSquares = localStorage.getItem('markedSquares');
+      if (savedMarkedSquares) {
+        markedSquares = JSON.parse(savedMarkedSquares);
+        applyMarkedSquares();
+      }
+
       function markSquare(square) {
         square.classList.toggle('marked');
         if (square.classList.contains('marked')) {
@@ -113,8 +132,17 @@
         } else {
           markedSquares = markedSquares.filter(item => item !== square.textContent);
         }
+        saveToLocalStorage();
         checkBingo();
-        saveToLocalStorage(); // Save current state to local storage
+      }
+
+      function applyMarkedSquares() {
+        const squares = document.querySelectorAll('.bingo-square');
+        squares.forEach(square => {
+          if (markedSquares.includes(square.textContent)) {
+            square.classList.add('marked');
+          }
+        });
       }
 
       function checkBingo() {
@@ -165,20 +193,7 @@
       }
 
       function saveToLocalStorage() {
-        const boardState = JSON.stringify(markedSquares);
-        localStorage.setItem('bingoBoardState', boardState);
-      }
-
-      function loadFromLocalStorage() {
-        const savedState = localStorage.getItem('bingoBoardState');
-        if (savedState) {
-          markedSquares = JSON.parse(savedState);
-          for (const square of bingoBoard.children) {
-            if (markedSquares.includes(square.textContent)) {
-              square.classList.add('marked');
-            }
-          }
-        }
+        localStorage.setItem('markedSquares', JSON.stringify(markedSquares));
       }
 
       function saveAsImage() {
@@ -190,13 +205,22 @@
         });
       }
 
-      // Load saved state from local storage on page load
-      loadFromLocalStorage();
+      function resetBoard() {
+        const squares = document.querySelectorAll('.bingo-square');
+        squares.forEach(square => {
+          square.classList.remove('marked');
+        });
+        markedSquares = [];
+        saveToLocalStorage();
+      }
 
-      // Save current state to local storage every 5 seconds
-      setInterval(saveToLocalStorage, 5000);
+      // Save the state every 5 seconds
+      setInterval(() => {
+        localStorage.setItem('bingoBoardState', JSON.stringify(randomizedSquares));
+      }, 5000);
     });
   </script>
 </body>
 
 </html>
+
