@@ -11,7 +11,7 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       grid-gap: 20px;
-      max-width: 600px;
+      max-width: 800px;
       margin: 0 auto;
     }
 
@@ -29,11 +29,6 @@
 
     .save-button {
       margin-top: 20px;
-      display: block;
-    }
-
-    .reset-button {
-      margin-top: 10px;
       display: block;
     }
   </style>
@@ -55,10 +50,10 @@
 
   <section class="content">
     <div class="centered">
-      <h2>Map Jam Bingo Board</h2>
+      <h2>5x5 Bingo Board</h2>
       <div class="bingo-board" id="bingoBoard"></div>
       <button class="save-button" onclick="saveAsImage()">Save as Image</button>
-      <button class="reset-button" onclick="resetBoard()">Reset</button>
+      <button class="save-button" onclick="resetBoard()">Reset Board</button>
     </div>
   </section>
 
@@ -88,24 +83,12 @@
         "Lucian lets a guy in an hour late",
         "A map is missing an RP",
         "Worf's Second Map gets top 10",
-        "Corgi's map doesn't work",
-        "New Square 1",
-        "New Square 2",
-        "New Square 3",
-        "New Square 4",
-        "New Square 5"
+        "Corgi's map doesn't work"
       ];
 
+      let randomizedSquares = squares.sort(() => Math.random() - 0.5);
       let markedSquares = [];
-      let randomizedSquares = [];
-
-      // Load saved state from local storage or randomize the order of squares
-      const savedState = localStorage.getItem('bingoBoardState');
-      if (savedState) {
-        randomizedSquares = JSON.parse(savedState);
-      } else {
-        randomizedSquares = squares.sort(() => Math.random() - 0.5);
-      }
+      let completedLines = [];
 
       const bingoBoard = document.getElementById('bingoBoard');
 
@@ -118,12 +101,7 @@
         bingoBoard.appendChild(square);
       }
 
-      // Load marked squares from local storage
-      const savedMarkedSquares = localStorage.getItem('markedSquares');
-      if (savedMarkedSquares) {
-        markedSquares = JSON.parse(savedMarkedSquares);
-        applyMarkedSquares();
-      }
+      loadSavedState();
 
       function markSquare(square) {
         square.classList.toggle('marked');
@@ -132,21 +110,14 @@
         } else {
           markedSquares = markedSquares.filter(item => item !== square.textContent);
         }
-        saveToLocalStorage();
         checkBingo();
-      }
-
-      function applyMarkedSquares() {
-        const squares = document.querySelectorAll('.bingo-square');
-        squares.forEach(square => {
-          if (markedSquares.includes(square.textContent)) {
-            square.classList.add('marked');
-          }
-        });
+        saveState();
       }
 
       function checkBingo() {
-        // Check for horizontal bingo
+        completedLines = [];
+
+        // Check for horizontal lines
         for (let i = 0; i < 25; i += 5) {
           if (
             markedSquares.includes(randomizedSquares[i]) &&
@@ -155,12 +126,12 @@
             markedSquares.includes(randomizedSquares[i + 3]) &&
             markedSquares.includes(randomizedSquares[i + 4])
           ) {
-            alert('Bingo!');
-            return;
+            completedLines.push('Horizontal Line');
+            break;
           }
         }
 
-        // Check for vertical bingo
+        // Check for vertical lines
         for (let i = 0; i < 5; i++) {
           if (
             markedSquares.includes(randomizedSquares[i]) &&
@@ -169,31 +140,63 @@
             markedSquares.includes(randomizedSquares[i + 15]) &&
             markedSquares.includes(randomizedSquares[i + 20])
           ) {
-            alert('Bingo!');
-            return;
+            completedLines.push('Vertical Line');
+            break;
           }
         }
 
-        // Check for diagonal bingo
+        // Check for diagonal lines
         if (
-          (markedSquares.includes(randomizedSquares[0]) &&
-            markedSquares.includes(randomizedSquares[6]) &&
-            markedSquares.includes(randomizedSquares[12]) &&
-            markedSquares.includes(randomizedSquares[18]) &&
-            markedSquares.includes(randomizedSquares[24])) ||
-          (markedSquares.includes(randomizedSquares[4]) &&
-            markedSquares.includes(randomizedSquares[8]) &&
-            markedSquares.includes(randomizedSquares[12]) &&
-            markedSquares.includes(randomizedSquares[16]) &&
-            markedSquares.includes(randomizedSquares[20]))
+          markedSquares.includes(randomizedSquares[0]) &&
+          markedSquares.includes(randomizedSquares[6]) &&
+          markedSquares.includes(randomizedSquares[12]) &&
+          markedSquares.includes(randomizedSquares[18]) &&
+          markedSquares.includes(randomizedSquares[24])
         ) {
-          alert('Bingo!');
-          return;
+          completedLines.push('Diagonal Line (Top Left to Bottom Right)');
+        }
+
+        if (
+          markedSquares.includes(randomizedSquares[4]) &&
+          markedSquares.includes(randomizedSquares[8]) &&
+          markedSquares.includes(randomizedSquares[12]) &&
+          markedSquares.includes(randomizedSquares[16]) &&
+          markedSquares.includes(randomizedSquares[20])
+        ) {
+          completedLines.push('Diagonal Line (Top Right to Bottom Left)');
+        }
+
+        if (completedLines.length > 0) {
+          alert('Bingo! You have completed the following line(s):\n' + completedLines.join('\n'));
         }
       }
 
-      function saveToLocalStorage() {
-        localStorage.setItem('markedSquares', JSON.stringify(markedSquares));
+      function saveState() {
+        localStorage.setItem('bingoMarkedSquares', JSON.stringify(markedSquares));
+      }
+
+      function loadSavedState() {
+        const savedMarkedSquares = localStorage.getItem('bingoMarkedSquares');
+        if (savedMarkedSquares) {
+          markedSquares = JSON.parse(savedMarkedSquares);
+          const squares = document.querySelectorAll('.bingo-square');
+          squares.forEach(square => {
+            if (markedSquares.includes(square.textContent)) {
+              square.classList.add('marked');
+            }
+          });
+          checkBingo();
+        }
+      }
+
+      function resetBoard() {
+        markedSquares = [];
+        completedLines = [];
+        const squares = document.querySelectorAll('.bingo-square');
+        squares.forEach(square => {
+          square.classList.remove('marked');
+        });
+        saveState();
       }
 
       function saveAsImage() {
@@ -204,20 +207,6 @@
           link.click();
         });
       }
-
-      function resetBoard() {
-        const squares = document.querySelectorAll('.bingo-square');
-        squares.forEach(square => {
-          square.classList.remove('marked');
-        });
-        markedSquares = [];
-        saveToLocalStorage();
-      }
-
-      // Save the state every 5 seconds
-      setInterval(() => {
-        localStorage.setItem('bingoBoardState', JSON.stringify(randomizedSquares));
-      }, 5000);
     });
   </script>
 </body>
