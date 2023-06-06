@@ -9,9 +9,9 @@
   <style>
     .bingo-board {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       grid-gap: 20px;
-      max-width: 600px;
+      max-width: 800px;
       margin: 0 auto;
     }
 
@@ -50,7 +50,7 @@
 
   <section class="content">
     <div class="centered">
-      <h2>Map Jam Bingo Board</h2>
+      <h2>5x5 Bingo Board</h2>
       <div class="bingo-board" id="bingoBoard"></div>
       <button class="save-button" onclick="saveAsImage()">Save as Image</button>
     </div>
@@ -77,12 +77,18 @@
         "Prime gets top 5-10",
         "One of Yegg's team members wins",
         "We actually didn't expect anything in a map",
-        "Guy who's been talking for 3 days fails to submi (Free Space)",
+        "Guy who's been talking for 3 days fails to submit (Free Space)",
         "You spawn in the wrong place",
         "Lucian lets a guy in an hour late",
         "A map is missing an RP",
         "Worf's Second Map gets top 10",
-        "Corgi's map doesn't work"
+        "Corgi's map doesn't work",
+        "Unexpected theme combination",
+        "Corgi leaves voice chat mid-jam",
+        "Someone creates a unique game mechanic",
+        "Prime gets a new skin mid-jam",
+        "Yegg's team creates an impressive build",
+        "A map exceeds the time limit"
       ];
 
       const bingoBoard = document.getElementById('bingoBoard');
@@ -92,7 +98,7 @@
       const randomizedSquares = squares.sort(() => Math.random() - 0.5);
 
       // Generate the bingo board
-      for (let i = 0; i < 16; i++) {
+      for (let i = 0; i < 25; i++) {
         const square = document.createElement('div');
         square.classList.add('bingo-square');
         square.textContent = randomizedSquares[i];
@@ -108,16 +114,18 @@
           markedSquares = markedSquares.filter(item => item !== square.textContent);
         }
         checkBingo();
+        saveToLocalStorage(); // Save current state to local storage
       }
 
       function checkBingo() {
         // Check for horizontal bingo
-        for (let i = 0; i < 16; i += 4) {
+        for (let i = 0; i < 25; i += 5) {
           if (
             markedSquares.includes(randomizedSquares[i]) &&
             markedSquares.includes(randomizedSquares[i + 1]) &&
             markedSquares.includes(randomizedSquares[i + 2]) &&
-            markedSquares.includes(randomizedSquares[i + 3])
+            markedSquares.includes(randomizedSquares[i + 3]) &&
+            markedSquares.includes(randomizedSquares[i + 4])
           ) {
             alert('Bingo! You have a horizontal line!');
             return;
@@ -125,12 +133,13 @@
         }
 
         // Check for vertical bingo
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
           if (
             markedSquares.includes(randomizedSquares[i]) &&
-            markedSquares.includes(randomizedSquares[i + 4]) &&
-            markedSquares.includes(randomizedSquares[i + 8]) &&
-            markedSquares.includes(randomizedSquares[i + 12])
+            markedSquares.includes(randomizedSquares[i + 5]) &&
+            markedSquares.includes(randomizedSquares[i + 10]) &&
+            markedSquares.includes(randomizedSquares[i + 15]) &&
+            markedSquares.includes(randomizedSquares[i + 20])
           ) {
             alert('Bingo! You have a vertical line!');
             return;
@@ -140,16 +149,35 @@
         // Check for diagonal bingo
         if (
           (markedSquares.includes(randomizedSquares[0]) &&
-            markedSquares.includes(randomizedSquares[5]) &&
-            markedSquares.includes(randomizedSquares[10]) &&
-            markedSquares.includes(randomizedSquares[15])) ||
-          (markedSquares.includes(randomizedSquares[3]) &&
             markedSquares.includes(randomizedSquares[6]) &&
-            markedSquares.includes(randomizedSquares[9]) &&
-            markedSquares.includes(randomizedSquares[12]))
+            markedSquares.includes(randomizedSquares[12]) &&
+            markedSquares.includes(randomizedSquares[18]) &&
+            markedSquares.includes(randomizedSquares[24])) ||
+          (markedSquares.includes(randomizedSquares[4]) &&
+            markedSquares.includes(randomizedSquares[8]) &&
+            markedSquares.includes(randomizedSquares[12]) &&
+            markedSquares.includes(randomizedSquares[16]) &&
+            markedSquares.includes(randomizedSquares[20]))
         ) {
           alert('Bingo! You have a diagonal line!');
           return;
+        }
+      }
+
+      function saveToLocalStorage() {
+        const boardState = JSON.stringify(markedSquares);
+        localStorage.setItem('bingoBoardState', boardState);
+      }
+
+      function loadFromLocalStorage() {
+        const savedState = localStorage.getItem('bingoBoardState');
+        if (savedState) {
+          markedSquares = JSON.parse(savedState);
+          for (const square of bingoBoard.children) {
+            if (markedSquares.includes(square.textContent)) {
+              square.classList.add('marked');
+            }
+          }
         }
       }
 
@@ -161,6 +189,12 @@
           link.click();
         });
       }
+
+      // Load saved state from local storage on page load
+      loadFromLocalStorage();
+
+      // Save current state to local storage every 5 seconds
+      setInterval(saveToLocalStorage, 5000);
     });
   </script>
 </body>
