@@ -95,21 +95,23 @@
           const square = document.createElement('div');
           square.classList.add('bingo-square');
           square.textContent = squares[i];
-          square.addEventListener('click', () => toggleSquare(square, i));
+          square.addEventListener('click', () => markSquare(square, i));
           bingoBoard.appendChild(square);
         }
       }
 
-      function toggleSquare(square, index) {
-        square.classList.toggle('marked');
-        if (square.classList.contains('marked')) {
+      function markSquare(square, index) {
+        if (!square.classList.contains('marked')) {
+          square.classList.add('marked');
           markedSquares.push(square.textContent);
         } else {
+          square.classList.remove('marked');
           const squareIndex = markedSquares.indexOf(square.textContent);
-          if (squareIndex !== -1) {
+          if (squareIndex > -1) {
             markedSquares.splice(squareIndex, 1);
           }
         }
+
         checkBingo();
         saveBoard();
       }
@@ -149,10 +151,12 @@
         const savedBoard = localStorage.getItem('bingoBoard');
         if (savedBoard) {
           markedSquares = JSON.parse(savedBoard);
-          for (let i = 0; i < markedSquares.length; i++) {
-            const square = bingoBoard.children[i];
-            square.classList.add('marked');
-          }
+          const squares = bingoBoard.querySelectorAll('.bingo-square');
+          squares.forEach((square, index) => {
+            if (markedSquares.includes(square.textContent)) {
+              square.classList.add('marked');
+            }
+          });
         }
       }
 
@@ -172,4 +176,3 @@
 </body>
 
 </html>
-
