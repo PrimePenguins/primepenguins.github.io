@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bingo Board</title>
+  <link rel="stylesheet" href="styles/maps.css">
+  <style>
+    .bingo-board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .bingo-square {
+      padding: 20px;
+      background-color: #b4e1ff;
+      text-align: center;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .bingo-square.marked {
+      background-color: #9dc1f8;
+    }
+
+    .save-button {
+      margin-top: 20px;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <h1>Prime's Site</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="bathroom.html">Bathroom Game</a></li>
+        <li><a href="minecraft-map.html">Minecraft Maps</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="content">
+    <div class="centered">
+      <h2>4x4 Bingo Board</h2>
+      <div class="bingo-board" id="bingoBoard"></div>
+      <button class="save-button" onclick="saveAsImage()">Save as Image</button>
+    </div>
+  </section>
+
+  <footer>
+    <!-- Footer content -->
+  </footer>
+
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const squares = [
+        "Someone's map stops working (Player Done)",
+        "Prime gets last place",
+        "Chopper gets top 10",
+        "At least 5 people/teams did not finish their map in time",
+        "Previous Winner wins the map jam",
+        "Someone's map breaks automatically",
+        "Someone didn't match any theme",
+        "Someone who wasn't expected to win",
+        "Someone didn't win and got mad",
+        "One of the maps goes wrong like 30 minutes before the submission deadline",
+        "Prime gets top 5-10",
+        "One of Yegg's team members wins",
+        "We actually didn't expect anything in a map",
+        "Guy who's been talking for 3 days fails to submi (Free Space)",
+        "You spawn in the wrong place",
+        "Lucian lets a guy in an hour late",
+        "A map is missing an RP",
+        "Worf's Second Map gets top 10",
+        "Corgi's map doesn't work"
+      ];
+
+      const bingoBoard = document.getElementById('bingoBoard');
+      let markedSquares = [];
+
+      // Randomize the order of the squares
+      const randomizedSquares = squares.sort(() => Math.random() - 0.5);
+
+      // Generate the bingo board
+      for (let i = 0; i < 16; i++) {
+        const square = document.createElement('div');
+        square.classList.add('bingo-square');
+        square.textContent = randomizedSquares[i];
+        square.addEventListener('click', () => markSquare(square));
+        bingoBoard.appendChild(square);
+      }
+
+      function markSquare(square) {
+        square.classList.toggle('marked');
+        if (square.classList.contains('marked')) {
+          markedSquares.push(square.textContent);
+        } else {
+          markedSquares = markedSquares.filter(item => item !== square.textContent);
+        }
+        checkBingo();
+      }
+
+      function checkBingo() {
+        // Check for horizontal bingo
+        for (let i = 0; i < 16; i += 4) {
+          if (
+            markedSquares.includes(randomizedSquares[i]) &&
+            markedSquares.includes(randomizedSquares[i + 1]) &&
+            markedSquares.includes(randomizedSquares[i + 2]) &&
+            markedSquares.includes(randomizedSquares[i + 3])
+          ) {
+            alert('Bingo! You have a horizontal line!');
+            return;
+          }
+        }
+
+        // Check for vertical bingo
+        for (let i = 0; i < 4; i++) {
+          if (
+            markedSquares.includes(randomizedSquares[i]) &&
+            markedSquares.includes(randomizedSquares[i + 4]) &&
+            markedSquares.includes(randomizedSquares[i + 8]) &&
+            markedSquares.includes(randomizedSquares[i + 12])
+          ) {
+            alert('Bingo! You have a vertical line!');
+            return;
+          }
+        }
+
+        // Check for diagonal bingo
+        if (
+          (markedSquares.includes(randomizedSquares[0]) &&
+            markedSquares.includes(randomizedSquares[5]) &&
+            markedSquares.includes(randomizedSquares[10]) &&
+            markedSquares.includes(randomizedSquares[15])) ||
+          (markedSquares.includes(randomizedSquares[3]) &&
+            markedSquares.includes(randomizedSquares[6]) &&
+            markedSquares.includes(randomizedSquares[9]) &&
+            markedSquares.includes(randomizedSquares[12]))
+        ) {
+          alert('Bingo! You have a diagonal line!');
+          return;
+        }
+      }
+
+      function saveAsImage() {
+        html2canvas(document.getElementById('bingoBoard')).then(function(canvas) {
+          const link = document.createElement('a');
+          link.download = 'bingo_board.png';
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>
