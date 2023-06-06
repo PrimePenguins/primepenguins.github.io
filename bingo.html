@@ -55,7 +55,7 @@
 
   <section class="content">
     <div class="centered">
-      <h2>5x5 Bingo Board</h2>
+      <h2>Map Jam Bingo Board</h2>
       <div class="bingo-board" id="bingoBoard"></div>
       <button class="save-button" onclick="saveAsImage()">Save as Image</button>
       <button class="reset-button" onclick="resetBoard()">Reset</button>
@@ -155,7 +155,7 @@
             markedSquares.includes(randomizedSquares[i + 3]) &&
             markedSquares.includes(randomizedSquares[i + 4])
           ) {
-            alert('Bingo! You have a horizontal line!');
+            alert('Bingo!');
             return;
           }
         }
@@ -169,7 +169,7 @@
             markedSquares.includes(randomizedSquares[i + 15]) &&
             markedSquares.includes(randomizedSquares[i + 20])
           ) {
-            alert('Bingo! You have a vertical line!');
+            alert('Bingo!');
             return;
           }
         }
@@ -187,7 +187,7 @@
             markedSquares.includes(randomizedSquares[16]) &&
             markedSquares.includes(randomizedSquares[20]))
         ) {
-          alert('Bingo! You have a diagonal line!');
+          alert('Bingo!');
           return;
         }
       }
