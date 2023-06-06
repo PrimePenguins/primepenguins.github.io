@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bingo Board</title>
+  <title>Map Jam Bingo</title>
   <link rel="stylesheet" href="styles/maps.css">
   <style>
     .bingo-board {
@@ -45,10 +45,9 @@
 
   <section class="content">
     <div class="centered">
-      <h2>5x5 Bingo Board</h2>
+      <h2>Map Jam Bingo</h2>
       <div class="bingo-board" id="bingoBoard"></div>
       <button class="save-button" onclick="saveAsImage()">Save as Image</button>
-      <button class="reset-button" onclick="resetBoard()">Reset Board</button>
     </div>
   </section>
 
@@ -60,7 +59,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const squares = [
-        "Someone's map stops working (Player Done)",
+      "Someone's map stops working (Player Done)",
         "Prime gets last place",
         "Chopper gets top 10",
         "At least 5 people/teams did not finish their map in time",
@@ -78,100 +77,68 @@
         "Lucian lets a guy in an hour late",
         "A map is missing an RP",
         "Worf's Second Map gets top 10",
-        "Corgi's map doesn't work"
+        "Corgi's map doesn't work",
+        "Someone sumbits the map one minute before deadline",
+        "Someone breaking someone else's map",
+        "A lot of people agree a map sucked",
+        "Free Space",
+        "A lot of people agreed a map was good"
       ];
 
       const bingoBoard = document.getElementById('bingoBoard');
       let markedSquares = [];
 
-      generateBoard();
-
       function generateBoard() {
-        const randomizedSquares = shuffleArray(squares);
+        bingoBoard.innerHTML = '';
 
         for (let i = 0; i < 25; i++) {
           const square = document.createElement('div');
           square.classList.add('bingo-square');
-          square.textContent = randomizedSquares[i];
-          square.addEventListener('click', () => markSquare(square));
+          square.textContent = squares[i];
+          square.addEventListener('click', () => toggleSquare(square, i));
           bingoBoard.appendChild(square);
         }
       }
 
-      function shuffleArray(array) {
-        const newArray = array.slice();
-        for (let i = newArray.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-        }
-        return newArray;
-      }
-
-      function markSquare(square) {
+      function toggleSquare(square, index) {
         square.classList.toggle('marked');
         if (square.classList.contains('marked')) {
           markedSquares.push(square.textContent);
         } else {
-          markedSquares = markedSquares.filter(item => item !== square.textContent);
+          const squareIndex = markedSquares.indexOf(square.textContent);
+          if (squareIndex !== -1) {
+            markedSquares.splice(squareIndex, 1);
+          }
         }
         checkBingo();
         saveBoard();
       }
 
       function checkBingo() {
-        // Check for horizontal bingo
-        for (let i = 0; i < 25; i += 5) {
-          if (
-            markedSquares.includes(randomizedSquares[i]) &&
-            markedSquares.includes(randomizedSquares[i + 1]) &&
-            markedSquares.includes(randomizedSquares[i + 2]) &&
-            markedSquares.includes(randomizedSquares[i + 3]) &&
-            markedSquares.includes(randomizedSquares[i + 4])
-          ) {
-            alert('Bingo! You have a horizontal line!');
+        const lines = [
+          // Horizontal lines
+          [0, 1, 2, 3, 4],
+          [5, 6, 7, 8, 9],
+          [10, 11, 12, 13, 14],
+          [15, 16, 17, 18, 19],
+          [20, 21, 22, 23, 24],
+          // Vertical lines
+          [0, 5, 10, 15, 20],
+          [1, 6, 11, 16, 21],
+          [2, 7, 12, 17, 22],
+          [3, 8, 13, 18, 23],
+          [4, 9, 14, 19, 24],
+          // Diagonal lines
+          [0, 6, 12, 18, 24],
+          [4, 8, 12, 16, 20]
+        ];
+
+        for (const line of lines) {
+          if (line.every(index => markedSquares.includes(squares[index]))) {
+            alert('You Got A Bingo!');
             return;
           }
         }
-
-        // Check for vertical bingo
-        for (let i = 0; i < 5; i++) {
-          if (
-            markedSquares.includes(randomizedSquares[i]) &&
-            markedSquares.includes(randomizedSquares[i + 5]) &&
-            markedSquares.includes(randomizedSquares[i + 10]) &&
-            markedSquares.includes(randomizedSquares[i + 15]) &&
-            markedSquares.includes(randomizedSquares[i + 20])
-          ) {
-            alert('Bingo! You have a vertical line!');
-            return;
-          }
-        }
-
-        // Check for diagonal bingo
-        if (
-          (markedSquares.includes(randomizedSquares[0]) &&
-            markedSquares.includes(randomizedSquares[6]) &&
-            markedSquares.includes(randomizedSquares[12]) &&
-            markedSquares.includes(randomizedSquares[18]) &&
-            markedSquares.includes(randomizedSquares[24])) ||
-          (markedSquares.includes(randomizedSquares[4]) &&
-            markedSquares.includes(randomizedSquares[8]) &&
-            markedSquares.includes(randomizedSquares[12]) &&
-            markedSquares.includes(randomizedSquares[16]) &&
-            markedSquares.includes(randomizedSquares[20]))
-        ) {
-          alert('Bingo! You have a diagonal line!');
-          return;
-        }
-      }
-
-      function saveAsImage() {
-        html2canvas(document.getElementById('bingoBoard')).then(function(canvas) {
-          const link = document.createElement('a');
-          link.download = 'bingo_board.png';
-          link.href = canvas.toDataURL('image/png');
-          link.click();
-        });
       }
 
       function saveBoard() {
@@ -182,25 +149,23 @@
         const savedBoard = localStorage.getItem('bingoBoard');
         if (savedBoard) {
           markedSquares = JSON.parse(savedBoard);
-          const squares = bingoBoard.querySelectorAll('.bingo-square');
-          squares.forEach(square => {
-            const textContent = square.textContent;
-            if (markedSquares.includes(textContent)) {
-              square.classList.add('marked');
-            } else {
-              square.classList.remove('marked');
-            }
-          });
+          for (let i = 0; i < markedSquares.length; i++) {
+            const square = bingoBoard.children[i];
+            square.classList.add('marked');
+          }
         }
       }
 
-      function resetBoard() {
-        bingoBoard.innerHTML = '';
-        markedSquares = [];
-        localStorage.removeItem('bingoBoard');
-        generateBoard();
+      function saveAsImage() {
+        html2canvas(document.getElementById('bingoBoard')).then(function(canvas) {
+          const link = document.createElement('a');
+          link.download = 'map_jam_bingo.png';
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+        });
       }
 
+      generateBoard();
       loadBoard();
     });
   </script>
