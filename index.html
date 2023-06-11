@@ -1,36 +1,56 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <link rel="icon" href="icon.png" type="image/x-icon">
-    <title>Bathroom Shopping</title>      
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-</head>
-<body>
-    <div id="bathroom-container">
-        <div id="buy-cost">Buy Cost: 0</div>
-        <img id="bathroom-image" src="" alt="Bathroom Image">
-    </div>
-    <div id="sidebar">
-        <h1>Bathrooms</h1>
-        <div id="owned-bathrooms"></div>
-        <div id="coins-per-second">Coins Per Second: 0</div>
-        <div id="currency">Coins: 0</div>
-        <div id="achievements-container">
-            <div id="owned-achievements"></div>
-        </div>
-        <button id="reset-button" onclick="resetGame()">Reset</button>
-        <button id="save-button" onclick="saveGame()">Save</button>
-        <button id="load-button" onclick="loadGame()">Load</button>
-    </div>
-    <div id="button-container">
-        <button id="buy-button" onclick="buyBathroom()">Buy</button>
-        <button id="skip-button" onclick="skipBathroom()">Skip</button>
-        <button id="sell-button" onclick="sellBathroom()">Sell</button>
-    </div>
-    <div id="message"></div>
+<html lang="en">
 
-    <script src="bathroom.js"></script>
-    <script src="achievements.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="styles/homepage.css">
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <h1>Prime's Site</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="minecraft-map.html">Minecraft Maps</a></li>
+        <li><a href="bathroom.html">Bathroom Game</a></li>
+        <li><a href="bingo.html">Bingo Map Jam</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="content">
+    <div class="centered">
+      <p>Explore my Bathroom Game or Check out my Minecraft Maps! :D </p>
+
+      <div class="discord-widget">
+        <iframe src="https://discord.com/widget?id=912111774654939177&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+      </div>
+
+      <div class="speedrun-container">
+        <h2>Speedrunning Minecraft Maps</h2>
+        <p>Choose a Minecraft map below to start speedrunning:</p>
+        <label for="category-select">Select Category:</label>
+        <select id="category-select">
+          <option value="Code Red">Code Red</option>
+          <option value="AST 100%">AST | 100%</option>
+          <option value="AST Any%">AST | Any%</option>
+          <option value="ANUM">A Normal Unfair Map</option>
+          <option value="MC">Mimic Colors</option>
+          <!-- Add more options for different categories as needed -->
+          
+        </select>
+        <ul class="speedrun-list"></ul>
+        <h2> In order to sumbit your speedruns, join the discord.</h2>
+      </div>
+
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="scripts/speedrun/speedrun.js"></script>
 </body>
+
 </html>

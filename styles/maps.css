@@ -1,0 +1,130 @@
+/* minecraft-maps.css */
+
+body {
+  background: linear-gradient(to bottom, #9dc1f8, #6f96d1);
+  font-family: Arial, sans-serif;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #333333;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.logo h1 {
+  margin: 0;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav ul li {
+  margin-left: 10px;
+}
+
+nav ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 10px;
+}
+
+.content {
+  padding: 20px;
+}
+
+.centered {
+  text-align: center;
+}
+
+.minecraft-maps-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.minecraft-maps-list li {
+  margin-bottom: 10px;
+}
+
+footer {
+  background-color: #333333;
+  color: #ffffff;
+  padding: 10px;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.map-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust the minmax value as needed */
+  grid-gap: 20px; /* Adjust the gap between map selections */
+  justify-items: center;
+}
+
+.map {
+  background-color: #b4e1ff;
+  padding: 10px;
+  text-align: center;
+}
+
+.map img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.map h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.map a {
+  display: block;
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #333333;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.speedrun-container {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.speedrun-container h2 {
+  font-size: 20px;
+}
+
+.speedrun-container p {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.speedrun-container ul {
+  margin-top: 10px;
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.speedrun-container li {
+  font-size: 14px;
+  margin-bottom: 5px;
+}

@@ -1,0 +1,156 @@
+/* styles.css */
+
+/* Common styles */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #333;
+    color: #f2f2f2;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#bathroom-container {
+    width: 70%; /* Adjust the width as desired */
+    margin: auto;
+    height: 80vh; /* Adjust the height as desired */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#sidebar {
+    width: 200px;
+    overflow-y: scroll;
+    padding: 10px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2e2e2e;
+}
+
+#owned-bathrooms {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#owned-bathrooms > div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#owned-bathrooms img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+#bathroom-image {
+    max-height: calc(100vh - 100px); /* Subtract the sidebar height and buy cost text height */
+    margin: 10px;
+}
+
+#buy-cost {
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#button-container {
+    text-align: center;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#button-container button {
+    background-color: #4CAF50;
+    color: white;
+    margin: 5px 0;
+    padding: 8px 15px; /* Adjust the button padding as desired */
+    width: 90px; /* Adjust the button width as desired */
+    border: none;
+    border-radius: 20px; /* Adjust the border radius to make it rounded */
+    font-size: 14px; /* Adjust the font size as desired */
+    cursor: pointer;
+}
+
+#button-container button:hover {
+    background-color: #45a049;
+}
+
+#message {
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+#currency {
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.upgrade-item,
+.achievement-item {
+    background-color: #f2f2f2;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 80%;
+    text-align: center;
+}
+
+#sidebar #button-container button {
+    width: 100%; /* Adjust the button width as desired */
+}
+
+/* Mobile styles */
+@media only screen and (max-width: 600px) {
+    #bathroom-container {
+        width: 90%; /* Adjust the width as desired */
+    }
+  
+    #sidebar {
+        width: 100%;
+        position: static;
+        flex-direction: row;
+        justify-content: space-around;
+        overflow-y: hidden;
+        padding-bottom: 20px;
+    }
+  
+    #owned-bathrooms {
+        flex-direction: row;
+        align-items: center;
+        overflow-x: scroll;
+    }
+  
+    #owned-bathrooms > div {
+        margin-right: 10px;
+    }
+  
+    #bathroom-image {
+        max-height: calc(100vh - 150px); /* Subtract the buy cost text height and additional margin */
+    }
+  
+    #buy-cost {
+        margin-top: 10px;
+        margin-bottom: 0;
+    }
+  
+    #button-container {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}
