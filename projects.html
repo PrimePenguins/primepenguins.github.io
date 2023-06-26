@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/project.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img src="img/home_icon.png" width="20" height="20">
+                <h1>Prime's Site</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="projects.html" class="active">Projects</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="project-wrapper">
+        <h2>Projects</h2>
+        <div class="button-wrapper">
+            <button class="project-button active" data-category="maps">Maps</button>
+            <button class="project-button" data-category="datapacks">Datapacks</button>
+        </div>
+        <div class="project-grid">
+            <div class="project-category maps">
+                <div class="project-card" onclick="location.href='project/a_simple_test.html';">
+                    <img src="img/map-images/ast.jpg" alt="A Simple Test">
+                    <h3>A Simple Test</h3>
+                </div>
+                <div class="project-card" onclick="location.href='project/mimic-color.html';">
+                    <img src="img/map-images/mimic-color.jpg" alt="Mimic Color">
+                    <h3>Mimic Color</h3>
+                </div>
+                <div class="project-card" onclick="location.href='project/code-red.html';">
+                    <img src="img/map-images/code-red.jpg" alt="Code Red">
+                    <h3>Code Red</h3>
+                </div>
+                <div class="project-card" onclick="location.href='project/bow-battle.html';">
+                    <img src="img/map-images/bowbattle.jpg" alt="Bow Battle">
+                    <h3>Bow Battle</h3>
+                </div>
+                <div class="project-card" onclick="location.href='project/ufj.html';">
+                    <img src="img/map-images/UFJ.jpg" alt="Unfair Journey">
+                    <h3>Unfair Journey</h3>
+                </div>
+                <div class="project-card" onclick="location.href='project/a_normal_unfair_map.html';">
+                    <img src="img/map-images/ANUFM.jpg" alt="A Normal Unfair Map">
+                    <h3>A Normal Unfair Map</h3>
+                </div>
+                <div class="project-card" onclick="location.href='project/conjure-clash.html';">
+                    <img src="img/map-images/Conjure-Clash-3-Logo.png" alt="Unfair Journey">
+                    <h3>Conjure Clash</h3>
+                </div>
+            </div>
+            
+            <div class="project-category datapacks">
+                <div class="project-card">
+                    <img src="img/datapack1.png" alt="Datapack 1">
+                    <h3>Datapack 1</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.project-button');
+            const categories = document.querySelectorAll('.project-category');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const category = button.getAttribute('data-category');
+                    categories.forEach(categoryElement => {
+                        categoryElement.style.display = 'none';
+                    });
+                    document.querySelector(`.project-category.${category}`).style.display = 'grid';
+                    button.classList.add('active');
+                    buttons.forEach(btn => {
+                        if (btn !== button) {
+                            btn.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            // Auto-select "Maps" option on page load
+            const mapsButton = document.querySelector('.project-button[data-category="maps"]');
+            mapsButton.click();
+        });
+    </script>
+</body>
+</html>

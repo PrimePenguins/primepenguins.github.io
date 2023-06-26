@@ -1,57 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
-  <link rel="stylesheet" href="styles/homepage.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/home.css">
+
 </head>
-
 <body>
-  <header>
-    <div class="logo">
-      <h1>Prime's Site</h1>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img src="img/home_icon.png" width="20" height="20">
+                <h1>Prime's Site</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="image-wrapper">
+        <div class="content-wrapper">
+            <h2>Conjure Clash</h2>
+            <a href="#" class="button">Learn More</a>
+        </div>
+        <img src="img/wand_fuse.png">
     </div>
-    <nav>
-      <ul>
-        <li><a href="minecraft-map.html">Minecraft Maps</a></li>
-        <li><a href="bathroom.html">Bathroom Game</a></li>
-        <li><a href="bingo.html">Bingo Map Jam</a></li>
-        <li><a href="time-files.html">Time Labs Files</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <section class="content">
-    <div class="centered">
-      <p>Explore my Bathroom Game or Check out my Minecraft Maps! :D </p>
-
-      <div class="discord-widget">
-        <iframe src="https://discord.com/widget?id=912111774654939177&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+    <div class="social-buttons">
+        <a href="https://discord.gg/nsqpXAuxSE" class="social-button discord">Discord</a>
+        <a href="https://twitter.com/PrimePenguins" class="social-button twitter">Twitter</a>
+        <a href="https://www.twitch.tv/p2ime" class="social-button twitch">Twitch</a>
+        <a href="https://www.youtube.com/@p2ime" class="social-button youtube">Youtube</a>
       </div>
-
-      <div class="speedrun-container">
-        <h2>Speedrunning Minecraft Maps</h2>
-        <p>Choose a Minecraft map below to start speedrunning:</p>
-        <label for="category-select">Select Category:</label>
-        <select id="category-select">
-          <option value="Code Red">Code Red</option>
-          <option value="AST 100%">AST | 100%</option>
-          <option value="AST Any%">AST | Any%</option>
-          <option value="ANUM">A Normal Unfair Map</option>
-          <option value="MC">Mimic Colors</option>
-          <!-- Add more options for different categories as needed -->
-          
-        </select>
-        <ul class="speedrun-list"></ul>
-        <h2> In order to sumbit your speedruns, join the discord.</h2>
-      </div>
-
-  </section>
-
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="scripts/speedrun/speedrun.js"></script>
+      
 </body>
-
 </html>
