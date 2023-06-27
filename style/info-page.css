@@ -92,3 +92,50 @@ p {
 .download-link:hover {
     background-color: #666666;
 }
+
+.image-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.image-wrapper img {
+    max-width: 100%;
+    height: auto;
+}
+
+.info-page {
+    flex: 1 1 100%;
+    text-align: center;
+    padding: 30px;
+}
+
+.info-page h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.info-page p {
+    margin-bottom: 10px;
+}
+
+.separator {
+    height: 20px;
+    background-color: transparent;
+    border: none;
+}
+
+.download-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333333;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.download-link:hover {
+    background-color: #666666;
+}
