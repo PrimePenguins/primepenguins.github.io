@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Speedrunning</title>
+  <link rel="stylesheet" href="style/speedrun.css"> <!-- Add the link to your speedrun.css file -->
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <img src="img/home_icon.png" width="20" height="20">
+        <h1>Prime's Site</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="../">Home</a></li>
+          <li><a href="projects">Projects</a></li>
+          <li><a href="speedrun">Speedrun</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="content-wrapper">
+    <nav>
+      <ul id="categoryList">
+        <!-- Categories will be added dynamically via JavaScript -->
+      </ul>
+    </nav>
+    <h2>Select a Speedrun Category:</h2>
+    <select id="selectedCategory">
+      <!-- Categories will be added dynamically via JavaScript -->
+    </select>
+    <div id="leaderboard"></div>
+  </div>
+
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script src="script/speedrun.js"></script> <!-- Include your JavaScript code -->
+</body>
+</html>
