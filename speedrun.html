@@ -10,7 +10,7 @@
     <div class="header-content">
       <div class="logo">
         <img src="img/home_icon.png" width="20" height="20">
-        <h1>Prime's Site</h1>
+        <h1>Speedrunning</h1>
       </div>
       <nav>
         <ul>
@@ -23,19 +23,27 @@
   </header>
 
   <div class="content-wrapper">
-    <nav>
-      <ul id="categoryList">
-        <!-- Categories will be added dynamically via JavaScript -->
-      </ul>
-    </nav>
     <h2>Select a Speedrun Category:</h2>
-    <select id="selectedCategory">
+    <select id="category-select">
       <!-- Categories will be added dynamically via JavaScript -->
     </select>
-    <div id="leaderboard"></div>
   </div>
 
-  <script src="https://apis.google.com/js/api.js"></script>
+  <ul class="speedrun-list">
+    <!-- Speedrun data will be added dynamically via JavaScript -->
+  </ul>
+
+  <div class="streak-through">
+    <div class="streak-text">
+      <!-- Speedrun text "Player - Time" goes here -->
+    </div>
+  </div>
+
+  <div class="rules">
+    <p>View the rules <a href="https://docs.google.com/document/d/1Fr3cL8SlwLA4qsVC6Gb0mzAJN7yZG3amO2axg2AUF7M/edit?usp=sharing" target="_blank">here</a>.</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="script/speedrun.js"></script> <!-- Include your JavaScript code -->
 </body>
 </html>
