@@ -134,3 +134,7 @@ body {
     background-color: 	#5865F2;
   }
   
+  a {
+    text-decoration: none; /* Remove underline from all links */
+  }
+  

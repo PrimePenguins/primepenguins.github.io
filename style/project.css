@@ -124,3 +124,8 @@ h2 {
     font-size: 18px;
     margin-top: 10px;
 }
+
+a {
+    text-decoration: none; /* Remove underline from all links */
+  }
+  

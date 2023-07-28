@@ -176,3 +176,8 @@ p {
     max-width: 100%;
     height: auto;
 }
+
+a {
+    text-decoration: none; /* Remove underline from all links */
+  }
+  

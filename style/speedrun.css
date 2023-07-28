@@ -156,3 +156,22 @@
     color: #e5b800;
   }
   
+  /* Add the appropriate colors for the first three list items (Gold, Silver, Bronze) */
+/* Add the following styles to your speedrun.css file */
+a {
+  text-decoration: none; /* Remove underline from all links */
+}
+
+/* Add the following styles to your speedrun.css file */
+a {
+  text-decoration: none; /* Remove underline from all links */
+  color: #000; /* Set the default link color */
+}
+
+a.has-link {
+  color: rgb(255, 255, 255); /* Set the link color for links with URL */
+}
+
+a.no-link {
+  color: #000; /* Set the link color for links without URL */
+}
