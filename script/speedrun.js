@@ -72,15 +72,16 @@ async function fetchSpeedrunData(category) {
         listItem.style.color = '#cd7f32'; // Bronze color
       }
 
-      // Check if there's a link and add the 'Click Here To View Run' link
+      // Check if there's a link and add the 'View Run' link
       if (link) {
         const runLink = document.createElement('a');
-runLink.textContent = ' - View Run';
-runLink.href = link;
-runLink.target = '_blank';
-runLink.style.color = 'yellow'; // Change the link text color to yellow
-listItem.appendChild(runLink);
-
+        runLink.textContent = 'View Run';
+        runLink.href = link;
+        runLink.target = '_blank'; // To open the link in a new tab
+        runLink.style.color = 'yellow'; // Change the link text color to yellow
+        runLink.style.textDecoration = 'underline'; // Underline the link
+        listItem.appendChild(document.createTextNode(' ')); // Add some space between player and link
+        listItem.appendChild(runLink);
       }
 
       rank++;
