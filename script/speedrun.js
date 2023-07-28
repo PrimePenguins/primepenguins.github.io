@@ -31,9 +31,9 @@ async function fetchSpeedrunData(category) {
     speedrunList.innerHTML = '';
 
     // Determine the correct header based on the category
-    let headerText = 'Player -   Time - Runs';
+    let headerText = 'Player - Time';
     if (category === 'Mimic Colors') {
-      headerText = 'Players - Rounds - Runs';
+      headerText = 'Players - Rounds';
     }
 
     // Add the header as the first item in the list
