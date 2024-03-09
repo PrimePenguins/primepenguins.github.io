@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toilet Tycoon Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        #money {
+            font-size: 24px;
+            font-weight: bold;
+            color: green;
+        }
+        #toilet {
+            text-align: left;
+        }
+        #toiletList {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+        #toiletList li {
+            margin-bottom: 5px;
+        }
+        #toiletsOwned {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .toilet-icon {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="toilet">
+            <h2>Your Current Toilet</h2>
+            <div id="currentToilet">
+                <i class="toilet-icon" id="toiletIcon"></i>
+                <span id="toiletType">No toilet bought yet</span>
+            </div>
+            <p id="toiletCost"></p>
+            <p>Your Money: $<span id="money">0</span></p>
+            <button onclick="buyToilet()">Buy Toilet</button>
+            <button onclick="saveGame()">Save Game</button>
+        </div>
+        <div id="toiletsOwned">
+            <h2>Toilets You Own</h2>
+            <ul id="toiletList"></ul>
+        </div>
+    </div>
+
+    <script>
+        let money = localStorage.getItem('money') ? parseInt(localStorage.getItem('money')) : 0;
+        let toiletsOwned = localStorage.getItem('toiletsOwned') ? JSON.parse(localStorage.getItem('toiletsOwned')) : [];
+
+        function updateUI() {
+            document.getElementById('money').innerText = money;
+
+            const currentToiletElement = document.getElementById('currentToilet');
+            const toiletCostElement = document.getElementById('toiletCost');
+
+            if (toiletsOwned.length > 0) {
+                const currentToilet = toiletsOwned[toiletsOwned.length - 1];
+                document.getElementById('toiletIcon').className = 'toilet-icon fa ' + currentToilet.icon;
+                document.getElementById('toiletType').innerText = currentToilet.type;
+                toiletCostElement.innerText = `Cost: $${currentToilet.cost}`;
+            } else {
+                document.getElementById('toiletIcon').className = 'toilet-icon';
+                document.getElementById('toiletType').innerText = 'No toilet bought yet';
+                toiletCostElement.innerText = '';
+            }
+
+            const toiletList = document.getElementById('toiletList');
+            toiletList.innerHTML = '';
+            toiletsOwned.forEach(toilet => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `<i class="toilet-icon fa ${toilet.icon}"></i> ${toilet.type}`;
+                toiletList.appendChild(listItem);
+            });
+        }
+
+        updateUI();
+
+        function buyToilet() {
+            // Define toilet types and their corresponding costs
+            const toilets = [
+                { type: "Basic Toilet", cost: 10, revenue: 1, icon: "fa-toilet-paper" },
+                { type: "Advertiser Toilet", cost: 20, revenue: 2, icon: "fa-ad" },
+                { type: "Energy Saver Toilet", cost: 30, revenue: 3, icon: "fa-lightbulb" },
+                { type: "Premium Toilet", cost: 50, revenue: 5, icon: "fa-gem" },
+                {type: "Car Toilet", cost: 1000, revenue: 10, icon: "fa-solid fa-car"}
+            ];
+
+            // Randomly select a toilet type
+            const randomToiletIndex = Math.floor(Math.random() * toilets.length);
+            const selectedToilet = toilets[randomToiletIndex];
+
+            // Check if the player has enough money to buy the toilet
+            if (money >= selectedToilet.cost) {
+                // Deduct the cost of the toilet from the player's money
+                money -= selectedToilet.cost;
+
+                // Add the bought toilet to the collection
+                toiletsOwned.push(selectedToilet);
+
+                // Save game state to local storage
+                localStorage.setItem('money', money);
+                localStorage.setItem('toiletsOwned', JSON.stringify(toiletsOwned));
+
+                // Update UI
+                updateUI();
+            } else {
+                alert("You don't have enough money to buy this toilet!");
+            }
+        }
+
+        function saveGame() {
+            const data = {
+                money: money,
+                toiletsOwned: toiletsOwned
+            };
+
+            fetch('savegame.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Automatic saving every 10 seconds
+        setInterval(saveGame, 10000);
+    </script>
+</body>
+</html>
