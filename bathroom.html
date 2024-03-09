@@ -63,8 +63,9 @@
     </div>
 
     <script>
-        let money = localStorage.getItem('money') ? parseInt(localStorage.getItem('money')) : 0;
-        let toiletsOwned = localStorage.getItem('toiletsOwned') ? JSON.parse(localStorage.getItem('toiletsOwned')) : [];
+        let money = localStorage.getItem('money') ? parseInt(localStorage.getItem('money')) : 100;
+let toiletsOwned = localStorage.getItem('toiletsOwned') ? JSON.parse(localStorage.getItem('toiletsOwned')) : [];
+
 
         function updateUI() {
             document.getElementById('money').innerText = money;
