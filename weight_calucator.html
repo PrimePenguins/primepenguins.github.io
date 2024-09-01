@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Percentage Display with Gradient</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+        }
+        .slider {
+            -webkit-appearance: none;
+            width: 300px;
+            height: 15px;
+            border-radius: 5px;
+            background: linear-gradient(90deg, #007bff 0%, #007bff 0%, #ddd 0%, #ddd 100%);
+            outline: none;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #007bff;
+            cursor: pointer;
+        }
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #007bff;
+            cursor: pointer;
+        }
+        .output {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        .bubble {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .bubble::after {
+            content: attr(data-value);
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        .bubble input {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 14px;
+            width: 60px;
+            border: none;
+            text-align: center;
+            outline: none;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="bubble" id="bubble" data-value="0">
+            <input type="number" min="0" max="1024" value="0" id="numberInput">
+        </div>
+        <input type="range" min="0" max="1024" value="0" class="slider" id="mySlider">
+        <div class="output">
+            <span id="currentValue">0</span> out of 1024 (<span id="percentage">0.00</span>%)
+        </div>
+    </div>
+
+    <script>
+        const slider = document.getElementById('mySlider');
+        const percentage = document.getElementById('percentage');
+        const currentValue = document.getElementById('currentValue');
+        const bubble = document.getElementById('bubble');
+        const numberInput = document.getElementById('numberInput');
+
+        function updateSlider() {
+            const value = slider.value;
+            const percentValue = (value / 1024) * 100;
+
+            currentValue.textContent = value;
+            percentage.textContent = percentValue.toFixed(2);
+            bubble.setAttribute('data-value', value);
+            numberInput.value = value;
+            
+            // Update slider background gradient
+            slider.style.background = `linear-gradient(90deg, #007bff ${percentValue}%, #ddd ${percentValue}%)`;
+        }
+
+        function updateFromInput() {
+            let value = numberInput.value;
+            if (value < 0) value = 0;
+            if (value > 1024) value = 1024;
+
+            slider.value = value;
+            updateSlider();
+        }
+
+        slider.addEventListener('input', updateSlider);
+        numberInput.addEventListener('input', updateFromInput);
+
+        numberInput.addEventListener('focus', () => {
+            numberInput.style.opacity = 1;
+        });
+
+        numberInput.addEventListener('blur', () => {
+            numberInput.style.opacity = 0;
+        });
+        
+        // Initial update
+        updateSlider();
+    </script>
+</body>
+</html>
+
