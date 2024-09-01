@@ -40,14 +40,14 @@
     </style>
 </head>
 <body>
-    <h1>Minecraft Loot Table Weight Calculator</h1>
+    <h1>Minecraft Weights Percentage Calculator</h1>
     
     <form id="jsonForm">
-        <label for="jsonInput">Enter Minecraft loot table:</label><br>
+        <label for="jsonInput">Enter Minecraft loot table JSON:</label><br>
         <textarea id="jsonInput" rows="15" placeholder='{ "pools": [ ... ] }'></textarea><br><br>
         <div class="button-container">
-            <button type="button" onclick="calculateFromJSON()">Calculate</button>
-            <button type="button" onclick="copyJSON()">Copy Text</button>
+            <button type="button" onclick="calculateFromJSON()">Load and Calculate</button>
+            <button type="button" onclick="copyJSON()">Copy JSON</button>
         </div>
     </form>
 
@@ -57,7 +57,8 @@
             <tr>
                 <th>Item</th>
                 <th>Weight</th>
-                <th>Percentage (%)</th>
+                <th>Percentage per Roll (%)</th>
+                <th>Total Percentage (with Rolls) (%)</th>
             </tr>
         </thead>
         <tbody></tbody>
@@ -66,6 +67,7 @@
     <script>
         let items = [];
         let lootTable;
+        let rolls;
 
         function calculateFromJSON() {
             const jsonInput = document.getElementById('jsonInput').value;
@@ -76,15 +78,23 @@
                 return;
             }
 
-            const entries = lootTable.pools[0].entries;
+            // Clear existing items
             items = [];
             let totalWeight = 0;
 
-            for (const entry of entries) {
-                const item = entry.name.split(':')[1];
-                const weight = entry.weight;
-                items.push({ item, weight, entry });
-                totalWeight += weight;
+            // Process each pool
+            for (const pool of lootTable.pools) {
+                rolls = pool.rolls;
+                const entries = pool.entries;
+                const poolTotalWeight = entries.reduce((sum, entry) => sum + (entry.weight || 1), 0);
+
+                // Process each entry
+                for (const entry of entries) {
+                    const item = entry.name.split(':')[1];
+                    const weight = entry.weight || 1; // Default weight to 1 if not specified
+                    items.push({ item, weight, entry });
+                    totalWeight += weight;
+                }
             }
 
             populateTable();
@@ -95,29 +105,87 @@
             const resultTable = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
             resultTable.innerHTML = '';
 
-            for (let i = 0; i < items.length; i++) {
+            // Create unique entries with weights
+            let uniqueItems = [...new Set(items.map(item => item.item))];
+            let itemMap = uniqueItems.reduce((map, item) => {
+                map[item] = items.filter(i => i.item === item);
+                return map;
+            }, {});
+
+            for (let [item, itemEntries] of Object.entries(itemMap)) {
                 const row = resultTable.insertRow();
-                row.insertCell(0).textContent = items[i].item;
+                row.insertCell(0).textContent = item;
 
                 const weightCell = row.insertCell(1);
                 const weightInput = document.createElement('input');
                 weightInput.type = 'number';
-                weightInput.value = items[i].weight;
-                weightInput.dataset.index = i;
+                weightInput.value = itemEntries.reduce((sum, entry) => sum + entry.weight, 0);
+                weightInput.dataset.item = item;
                 weightInput.addEventListener('input', updateWeightAndRecalculate);
                 weightCell.appendChild(weightInput);
 
                 row.insertCell(2).textContent = '';
+                row.insertCell(3).textContent = '';
+
+                // Add subgroups for multiple entries if needed
+                if (itemEntries.length > 1) {
+                    const subgroupTable = document.createElement('table');
+                    subgroupTable.style.marginTop = '10px';
+                    subgroupTable.style.border = '1px solid #ccc';
+                    subgroupTable.style.borderCollapse = 'collapse';
+
+                    const subgroupHeader = document.createElement('thead');
+                    const subgroupHeaderRow = document.createElement('tr');
+                    subgroupHeaderRow.innerHTML = '<th>Entry</th><th>Weight</th>';
+                    subgroupHeader.appendChild(subgroupHeaderRow);
+                    subgroupTable.appendChild(subgroupHeader);
+
+                    const subgroupBody = document.createElement('tbody');
+                    itemEntries.forEach(entry => {
+                        const subgroupRow = subgroupBody.insertRow();
+                        subgroupRow.insertCell(0).textContent = entry.item;
+
+                        const subgroupWeightCell = subgroupRow.insertCell(1);
+                        const subgroupWeightInput = document.createElement('input');
+                        subgroupWeightInput.type = 'number';
+                        subgroupWeightInput.value = entry.weight;
+                        subgroupWeightInput.dataset.index = items.indexOf(entry);
+                        subgroupWeightInput.addEventListener('input', updateWeightAndRecalculate);
+                        subgroupWeightCell.appendChild(subgroupWeightInput);
+                    });
+                    subgroupTable.appendChild(subgroupBody);
+                    resultTable.rows[resultTable.rows.length - 1].appendChild(subgroupTable);
+                }
             }
-        } 
+        }
 
         function updateWeightAndRecalculate(event) {
             const index = event.target.dataset.index;
+            const item = event.target.dataset.item;
             const newWeight = parseInt(event.target.value, 10);
-            items[index].weight = isNaN(newWeight) ? 0 : newWeight;
 
-            // Update the JSON object with the new weight
-            items[index].entry.weight = items[index].weight;
+            if (index !== undefined) {
+                items[index].weight = isNaN(newWeight) ? 0 : newWeight;
+            } else {
+                const weightInput = Array.from(document.querySelectorAll(`input[data-item="${item}"]`));
+                const totalWeight = weightInput.reduce((sum, input) => sum + parseInt(input.value, 10), 0);
+
+                items.forEach(entry => {
+                    if (entry.item === item) {
+                        entry.weight = totalWeight;
+                    }
+                });
+            }
+
+            // Update the JSON object with the new weights
+            lootTable.pools.forEach(pool => {
+                pool.entries.forEach(entry => {
+                    const itemData = items.find(i => i.entry === entry);
+                    if (itemData) {
+                        entry.weight = itemData.weight;
+                    }
+                });
+            });
 
             // Update the JSON text area
             document.getElementById('jsonInput').value = JSON.stringify(lootTable, null, 2);
@@ -129,9 +197,16 @@
             let totalWeight = items.reduce((sum, item) => sum + item.weight, 0);
 
             const resultTable = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
-            for (let i = 0; i < items.length; i++) {
-                const percentage = totalWeight === 0 ? 0 : ((items[i].weight / totalWeight) * 100).toFixed(2);
-                resultTable.rows[i].cells[2].textContent = percentage;
+            for (let i = 0; i < resultTable.rows.length; i++) {
+                const row = resultTable.rows[i];
+                const itemName = row.cells[0].textContent;
+                const itemEntries = items.filter(item => item.item === itemName);
+
+                const percentagePerRoll = itemEntries.reduce((sum, entry) => sum + (entry.weight / totalWeight) * 100, 0).toFixed(2);
+                const totalPercentage = (1 - Math.pow((1 - (itemEntries.reduce((sum, entry) => sum + entry.weight / totalWeight, 0))), rolls)) * 100;
+
+                row.cells[2].textContent = percentagePerRoll;
+                row.cells[3].textContent = totalPercentage.toFixed(2);
             }
         }
 
