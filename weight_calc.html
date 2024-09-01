@@ -40,14 +40,14 @@
     </style>
 </head>
 <body>
-    <h1>Minecraft Weights Percentage Calculator</h1>
+    <h1>Minecraft Loot Table Weight Calculator</h1>
     
     <form id="jsonForm">
-        <label for="jsonInput">Enter Minecraft loot table JSON:</label><br>
+        <label for="jsonInput">Enter Minecraft loot table:</label><br>
         <textarea id="jsonInput" rows="15" placeholder='{ "pools": [ ... ] }'></textarea><br><br>
         <div class="button-container">
-            <button type="button" onclick="calculateFromJSON()">Load and Calculate</button>
-            <button type="button" onclick="copyJSON()">Copy JSON</button>
+            <button type="button" onclick="calculateFromJSON()">Calculate</button>
+            <button type="button" onclick="copyJSON()">Copy Text</button>
         </div>
     </form>
 
@@ -109,7 +109,7 @@
 
                 row.insertCell(2).textContent = '';
             }
-        }
+        } 
 
         function updateWeightAndRecalculate(event) {
             const index = event.target.dataset.index;
