@@ -53,14 +53,12 @@
         <tbody></tbody>
     </table>
 
-    <button type="button" onclick="recalculatePercentages()">Recalculate Percentages</button>
-
     <script>
         let items = [];
+        let lootTable;
 
         function calculateFromJSON() {
             const jsonInput = document.getElementById('jsonInput').value;
-            let lootTable;
             try {
                 lootTable = JSON.parse(jsonInput);
             } catch (e) {
@@ -75,7 +73,7 @@
             for (const entry of entries) {
                 const item = entry.name.split(':')[1];
                 const weight = entry.weight;
-                items.push({ item, weight });
+                items.push({ item, weight, entry });
                 totalWeight += weight;
             }
 
@@ -96,25 +94,30 @@
                 weightInput.type = 'number';
                 weightInput.value = items[i].weight;
                 weightInput.dataset.index = i;
+                weightInput.addEventListener('input', updateWeightAndRecalculate);
                 weightCell.appendChild(weightInput);
 
                 row.insertCell(2).textContent = '';
             }
         }
 
+        function updateWeightAndRecalculate(event) {
+            const index = event.target.dataset.index;
+            const newWeight = parseInt(event.target.value, 10);
+            items[index].weight = isNaN(newWeight) ? 0 : newWeight;
+
+            // Update the JSON object with the new weight
+            items[index].entry.weight = items[index].weight;
+
+            // Update the JSON text area
+            document.getElementById('jsonInput').value = JSON.stringify(lootTable, null, 2);
+
+            recalculatePercentages();
+        }
+
         function recalculatePercentages() {
-            let totalWeight = 0;
+            let totalWeight = items.reduce((sum, item) => sum + item.weight, 0);
 
-            // Update weights based on user input
-            const inputs = document.querySelectorAll('input[type="number"]');
-            for (const input of inputs) {
-                const index = input.dataset.index;
-                const newWeight = parseInt(input.value, 10);
-                items[index].weight = isNaN(newWeight) ? 0 : newWeight;
-                totalWeight += items[index].weight;
-            }
-
-            // Calculate percentages and update the table
             const resultTable = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
             for (let i = 0; i < items.length; i++) {
                 const percentage = totalWeight === 0 ? 0 : ((items[i].weight / totalWeight) * 100).toFixed(2);
