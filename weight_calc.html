@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Weights Percentage Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        textarea {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Minecraft Weights Percentage Calculator</h1>
+    
+    <form id="jsonForm">
+        <label for="jsonInput">Enter Minecraft loot table JSON:</label><br>
+        <textarea id="jsonInput" rows="15" placeholder='{ "pools": [ ... ] }'></textarea><br><br>
+        <button type="button" onclick="calculateFromJSON()">Calculate Percentages</button>
+    </form>
+
+    <h2>Results</h2>
+    <table id="resultTable">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Weight</th>
+                <th>Percentage (%)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        function calculateFromJSON() {
+            const jsonInput = document.getElementById('jsonInput').value;
+            let lootTable;
+            try {
+                lootTable = JSON.parse(jsonInput);
+            } catch (e) {
+                alert("Invalid JSON format!");
+                return;
+            }
+
+            const entries = lootTable.pools[0].entries;
+            let totalWeight = 0;
+            const items = [];
+
+            for (const entry of entries) {
+                const item = entry.name.split(':')[1];
+                const weight = entry.weight;
+                items.push({ item, weight });
+                totalWeight += weight;
+            }
+
+            const resultTable = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
+            resultTable.innerHTML = '';
+
+            for (const item of items) {
+                const percentage = ((item.weight / totalWeight) * 100).toFixed(2);
+                const row = resultTable.insertRow();
+                row.insertCell(0).textContent = item.item;
+                row.insertCell(1).textContent = item.weight;
+                row.insertCell(2).textContent = percentage;
+            }
+        }
+    </script>
+</body>
+</html>
