@@ -27,6 +27,9 @@
         textarea {
             width: 100%;
         }
+        input[type="number"] {
+            width: 60px;
+        }
     </style>
 </head>
 <body>
@@ -35,7 +38,7 @@
     <form id="jsonForm">
         <label for="jsonInput">Enter Minecraft loot table JSON:</label><br>
         <textarea id="jsonInput" rows="15" placeholder='{ "pools": [ ... ] }'></textarea><br><br>
-        <button type="button" onclick="calculateFromJSON()">Calculate Percentages</button>
+        <button type="button" onclick="calculateFromJSON()">Load and Calculate</button>
     </form>
 
     <h2>Results</h2>
@@ -50,7 +53,11 @@
         <tbody></tbody>
     </table>
 
+    <button type="button" onclick="recalculatePercentages()">Recalculate Percentages</button>
+
     <script>
+        let items = [];
+
         function calculateFromJSON() {
             const jsonInput = document.getElementById('jsonInput').value;
             let lootTable;
@@ -62,8 +69,8 @@
             }
 
             const entries = lootTable.pools[0].entries;
+            items = [];
             let totalWeight = 0;
-            const items = [];
 
             for (const entry of entries) {
                 const item = entry.name.split(':')[1];
@@ -72,15 +79,46 @@
                 totalWeight += weight;
             }
 
+            populateTable();
+            recalculatePercentages();
+        }
+
+        function populateTable() {
             const resultTable = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
             resultTable.innerHTML = '';
 
-            for (const item of items) {
-                const percentage = ((item.weight / totalWeight) * 100).toFixed(2);
+            for (let i = 0; i < items.length; i++) {
                 const row = resultTable.insertRow();
-                row.insertCell(0).textContent = item.item;
-                row.insertCell(1).textContent = item.weight;
-                row.insertCell(2).textContent = percentage;
+                row.insertCell(0).textContent = items[i].item;
+
+                const weightCell = row.insertCell(1);
+                const weightInput = document.createElement('input');
+                weightInput.type = 'number';
+                weightInput.value = items[i].weight;
+                weightInput.dataset.index = i;
+                weightCell.appendChild(weightInput);
+
+                row.insertCell(2).textContent = '';
+            }
+        }
+
+        function recalculatePercentages() {
+            let totalWeight = 0;
+
+            // Update weights based on user input
+            const inputs = document.querySelectorAll('input[type="number"]');
+            for (const input of inputs) {
+                const index = input.dataset.index;
+                const newWeight = parseInt(input.value, 10);
+                items[index].weight = isNaN(newWeight) ? 0 : newWeight;
+                totalWeight += items[index].weight;
+            }
+
+            // Calculate percentages and update the table
+            const resultTable = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
+            for (let i = 0; i < items.length; i++) {
+                const percentage = totalWeight === 0 ? 0 : ((items[i].weight / totalWeight) * 100).toFixed(2);
+                resultTable.rows[i].cells[2].textContent = percentage;
             }
         }
     </script>
