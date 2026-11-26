@@ -1,97 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<link rel="stylesheet" href="./styles/projects_page.css">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style/project.css">
+    <meta charset="UTF-8">
     <title>Projects</title>
 </head>
+<header>
+    <menu>
+        <a href="./protofilio.html">Portfolio</a>
+        <a href="./projects.html">Projects</a>
+    </menu>
+</header>
 <body>
-    <header>
-        <div class="header-content">
-            <div class="logo">
-                <img src="img/home_icon.png" width="20" height="20">
-                <h1>Prime's Site</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="../">Home</a></li>
-                    <li><a href="projects" class="active">Projects</a></li>
-                    <li><a href="speedrun">Speedrun</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    <div class="project-wrapper">
-        <h2>Projects</h2>
-        <div class="button-wrapper">
-            <button class="project-button active" data-category="maps">Maps</button>
-            <button class="project-button" data-category="datapacks">Datapacks</button>
-        </div>
-        <div class="project-grid">
-            <div class="project-category maps">
-                <div class="project-card" onclick="location.href='project/maps/a_simple_test';">
-                    <img src="img/map-images/ast.jpg" alt="A Simple Test">
-                    <h3>A Simple Test</h3>
-                </div>
-                <div class="project-card" onclick="location.href='project/maps/mimic-colors';">
-                    <img src="img/map-images/mimic-color.jpg" alt="Mimic Color">
-                    <h3>Mimic Color</h3>
-                </div>
-                <div class="project-card" onclick="location.href='project/maps/code-red';">
-                    <img src="img/map-images/code-red.jpg" alt="Code Red">
-                    <h3>Code Red</h3>
-                </div>
-                <div class="project-card" onclick="location.href='project/maps/bow-battle';">
-                    <img src="img/map-images/bowbattle.jpg" alt="Bow Battle">
-                    <h3>Bow Battle</h3>
-                </div>
-                <div class="project-card" onclick="location.href='project/maps/ufj';">
-                    <img src="img/map-images/UFJ.jpg" alt="Unfair Journey">
-                    <h3>Unfair Journey</h3>
-                </div>
-                <div class="project-card" onclick="location.href='project/maps/a_normal_unfair_map';">
-                    <img src="img/map-images/ANUFM.jpg" alt="A Normal Unfair Map">
-                    <h3>A Normal Unfair Map</h3>
-                </div>
-                <div class="project-card" onclick="location.href='project/maps/conjure-clash';">
-                    <img src="img/map-images/Conjure_1.3v.jpg" alt="Unfair Journey">
-                    <h3>Conjure Clash</h3>
-                </div>
-            </div>
-            
-            <div class="project-category datapacks">
-                <div class="project-card" onclick="location.href='project/datapacks/magical_platforms';">
-                    <img src="img/datapack-images/magical_platforms.png" alt="Magical Platforms">
-                    <h3>Magical Platforms</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const buttons = document.querySelectorAll('.project-button');
-            const categories = document.querySelectorAll('.project-category');
 
-            buttons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const category = button.getAttribute('data-category');
-                    categories.forEach(categoryElement => {
-                        categoryElement.style.display = 'none';
-                    });
-                    document.querySelector(`.project-category.${category}`).style.display = 'grid';
-                    button.classList.add('active');
-                    buttons.forEach(btn => {
-                        if (btn !== button) {
-                            btn.classList.remove('active');
-                        }
-                    });
-                });
-            });
-
-            // Auto-select "Maps" option on page load
-            const mapsButton = document.querySelector('.project-button[data-category="maps"]');
-            mapsButton.click();
-        });
-    </script>
+    <maps>
+        <h1> Minecraft Maps: </h1>
+        <items>
+            <a href="https://www.planetminecraft.com/project/a-simple-test/" target="_blank"><img src="./images/thumbnails/a_simple_test/thumbnail.png">
+             <p class="player_count"> 1 Player </p> <p class="mc_version">Version: 1.19.3</p>
+                <p class="description"">It is simply, just a simple test. Answer the 10 questions, and there is something happening here.</p> 
+            </a>
+            <a href="https://mapverse.net/map/take-a-pic" target="_blank"><img src="./images/thumbnails/take_a_pic/thumbnail.png">
+                        <p class="player_count"> 1 Player </p> <p class="mc_version">Version: 26.1.2</p>
+                <p class="description">Survive 3 nights in a creepy old house, where there are Gh-o-ost?! AHHHHHH!</p> 
+            </a>
+                        <a href="https://www.planetminecraft.com/project/mimic-colors/" target="_blank"><img src="./images/thumbnails/mimic_colors/thumbnail.png">
+                        <p class="player_count"> 1 Player </p> <p class="mc_version">Version: 1.19.3</p>
+                <p class="description">Play in this intense game where you have to memorize the patterns.</p> 
+            </a>
+        </items>
+    </maps>
+    <maps>
+        <h1> Datapacks: </h1>
+        <items>
+            <a href="https://modrinth.com/datapack/border-expanse" target="_blank"><img src="./images/thumbnails/border_expanse/thumbnail.png"> 
+                <p class="player_count"> 1+ Players </p>
+                <p class="description"">An exciting challenge with the idea of making you wait, and gather things at a pace. Your goal? Survive.</p> 
+            </a>
+        </items>
+    </maps>
 </body>
-</html>

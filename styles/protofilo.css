@@ -1,0 +1,57 @@
+html, body {
+    margin: 0px;
+    padding: 0px;
+    min-height: 100vh;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #2A7B9B;
+    background: linear-gradient(230deg, rgba(42, 123, 155, 1) 0%, rgba(87, 141, 199, 1) 59%, rgb(90, 155, 233) 75%, rgba(83, 163, 237, 1) 100%);
+}
+
+header {
+    text-align: left;
+    text-decoration: none;
+}
+
+header a {
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+header a:hover {
+    color: rgb(223, 223, 223);
+}
+
+demos {
+    padding: 2px;
+    text-align: center;
+    color: white;
+}
+
+demos list {
+    display: flex;
+    flex-wrap: wrap;            /* wrap onto new rows on small screens */
+    justify-content: center;    /* center horizontally */
+    align-items: center;        /* center vertically within each row */
+    gap: 20px;                  /* spacing between iframes */
+    margin: 0;
+    padding: 10px;
+}
+
+demos list iframe {
+    flex: 1 1 320px;            /* grow, shrink, ideal width of 320px */
+    max-width: 450px;           /* stops them from stretching too wide */
+    aspect-ratio: 16 / 9;
+    height: auto;
+    border: 0;
+    border-radius: 25px;
+}
+
+demos list iframe:hover {          
+    scale: 1.05;
+    border: 2px solid white;
+}
